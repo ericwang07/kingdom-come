@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kingdom Come Youth Conference Counselor Application</title>
+    <meta
+      name="description"
+      content="Counselor application for Kingdom Come Youth Conference."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="applicant">
+    <main class="page">
+      <header class="page-header">
+        <p class="kicker">Kingdom Come Youth Conference</p>
+        <h1>Counselor Application</h1>
+      </header>
+
+      <form id="applicant-form" class="application-form" data-form-type="Counselor Application">
+        <section>
+          <h2>General Information</h2>
+          <div class="field-grid">
+            <label>
+              Name
+              <input name="Name" autocomplete="name" required />
+            </label>
+            <label>
+              Email
+              <input name="Email" type="email" autocomplete="email" required />
+            </label>
+            <label>
+              Cell Phone
+              <input name="Cell Phone" type="tel" autocomplete="tel" required />
+            </label>
+            <label>
+              School / Occupation
+              <input name="School/Occupation" required />
+            </label>
+          </div>
+
+          <fieldset>
+            <legend>Year in School</legend>
+            <div class="choice-list inline year-options">
+              <label><input type="radio" name="Year in School" value="Freshman" required /> Freshman</label>
+              <label><input type="radio" name="Year in School" value="Sophomore" /> Sophomore</label>
+              <label><input type="radio" name="Year in School" value="Junior" /> Junior</label>
+              <label><input type="radio" name="Year in School" value="Senior" /> Senior</label>
+              <label><input type="radio" name="Year in School" value="Graduated / Not applicable" /> Graduated / Not applicable</label>
+            </div>
+          </fieldset>
+
+          <div class="notice" id="seminar-section" hidden>
+            <p>
+              Upperclassmen, graduates, and other eligible applicants are invited to
+              propose a seminar that helps youth group students think more deeply about
+              certain aspects of living for God's Kingdom as Christian disciples. Every
+              potential lecturer must have their manuscript reviewed.
+            </p>
+            <fieldset>
+              <legend>Would you be interested in teaching a seminar?</legend>
+              <div class="choice-list inline">
+                <label><input type="radio" name="Interested in Teaching Seminar" value="Yes" /> Yes</label>
+                <label><input type="radio" name="Interested in Teaching Seminar" value="No" /> No</label>
+              </div>
+            </fieldset>
+            <div id="seminar-proposal-fields" hidden>
+              <label>
+                Seminar Title
+                <input
+                  name="Seminar Title"
+                  placeholder="What Are We Living For: Reimagining the Purpose of a College Education"
+                />
+              </label>
+              <label>
+                Seminar Abstract
+                <textarea
+                  name="Seminar Abstract"
+                  rows="6"
+                  placeholder="Please provide an abstract of one or two paragraphs."
+                ></textarea>
+              </label>
+              <p class="small-copy">
+                If your proposal is selected, you must provide a rough draft of your
+                manuscript or lesson for pastoral review.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>Church Information</h2>
+          <div class="field-grid">
+            <label>
+              Church Name
+              <input name="Church Name" required />
+            </label>
+            <fieldset>
+              <legend>Baptized</legend>
+              <div class="choice-list inline">
+                <label><input type="radio" name="Baptized" value="Yes" required /> Yes</label>
+                <label><input type="radio" name="Baptized" value="No" /> No</label>
+              </div>
+            </fieldset>
+          </div>
+          <label>
+            Describe the particular roles you serve in
+            <textarea
+              name="Church Roles"
+              rows="4"
+              placeholder="Examples: youth leader, service usher, small group helper"
+              required
+            ></textarea>
+          </label>
+        </section>
+
+        <section>
+          <h2>Pastoral Reference</h2>
+          <p class="small-copy">
+            After your application is submitted, you will be able to prepare an email
+            asking your pastor to complete the reference form. That email will not be
+            sent automatically.
+          </p>
+          <div class="field-grid">
+            <label>
+              Pastor's Name
+              <input name="Pastor's Name" required />
+            </label>
+            <label>
+              Pastor's Email
+              <input name="Pastor's Email" type="email" required />
+            </label>
+          </div>
+        </section>
+
+        <section>
+          <h2>Questions</h2>
+          <p class="small-copy">
+            In 1-2 paragraphs, please give a thoughtful response to each question.
+          </p>
+          <label>
+            Please share about how you came to faith in Christ, and how your faith has shaped your life.
+            <textarea name="Faith Testimony" rows="7" required></textarea>
+          </label>
+          <label>
+            Why do you desire to serve at KC? Why do you believe this is a meaningful opportunity for you?
+            <textarea name="Desire to Serve" rows="7" required></textarea>
+          </label>
+          <label>
+            What do you hope your students will know about Christ six months after KC is over?
+            <textarea name="Hope for Students" rows="7" required></textarea>
+          </label>
+        </section>
+
+        <section>
+          <h2>Availability</h2>
+          <fieldset>
+            <legend>
+              If selected, counselors will be expected to participate in prayer meetings
+              and counselor training sessions. Are you willing and able to make yourself
+              available for these required gatherings?
+            </legend>
+            <div class="choice-list">
+              <label><input type="radio" name="Available for Required Gatherings" value="Yes" required /> Yes</label>
+              <label><input type="radio" name="Available for Required Gatherings" value="No" /> No</label>
+            </div>
+          </fieldset>
+        </section>
+
+        <div class="form-actions">
+          <button class="primary-button" type="submit">Submit Application</button>
+          <button class="secondary-button" type="reset">Clear</button>
+        </div>
+      </form>
+
+      <section class="result-panel" id="result-panel" aria-live="polite" hidden>
+        <p class="kicker">Status</p>
+        <h2 id="result-title">Submitted</h2>
+        <p id="result-copy"></p>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>

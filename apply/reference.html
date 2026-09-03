@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kingdom Come Youth Conference Pastoral Reference</title>
+    <meta
+      name="description"
+      content="Pastoral reference form for Kingdom Come Youth Conference counselor applicants."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="reference">
+    <main class="page">
+      <header class="page-header">
+        <p class="kicker">Kingdom Come Youth Conference</p>
+        <h1>Pastoral Reference</h1>
+        <p>
+          Each applicant must obtain one letter of recommendation from a pastor,
+          ideally someone who has supervised them in a church ministry context.
+        </p>
+      </header>
+
+      <form id="pastor-form" class="application-form" data-form-type="Pastoral Reference">
+        <section>
+          <h2>Reference Information</h2>
+          <div class="field-grid">
+            <label>
+              Applicant's Name
+              <input name="Applicant's Name" required />
+            </label>
+            <label>
+              Name / Title
+              <input name="Name/Title" required />
+            </label>
+            <label>
+              Name of Church
+              <input name="Name of Church" required />
+            </label>
+            <label>
+              Email
+              <input name="Email" type="email" autocomplete="email" required />
+            </label>
+            <label>
+              How long have you known the applicant?
+              <input name="How long known applicant" required />
+            </label>
+          </div>
+        </section>
+
+        <section>
+          <h2>Questions</h2>
+          <p class="small-copy">
+            In 1-2 paragraphs, please give a thoughtful response to each question.
+          </p>
+          <label>
+            How would you describe the applicant's Christian character and faithfulness in the life of the church?
+            <textarea name="Christian Character and Faithfulness" rows="7" required></textarea>
+          </label>
+          <label>
+            Based on your knowledge of this applicant, do you believe they are well-suited to serve as a counselor to youth?
+            <textarea
+              name="Counselor Suitability"
+              rows="7"
+              placeholder="Please describe any strengths, weaknesses, or concerns we should consider."
+              required
+            ></textarea>
+          </label>
+        </section>
+
+        <div class="form-actions">
+          <button class="primary-button" type="submit">Submit Reference</button>
+          <button class="secondary-button" type="reset">Clear</button>
+        </div>
+      </form>
+
+      <section class="result-panel" id="result-panel" aria-live="polite" hidden>
+        <p class="kicker">Status</p>
+        <h2 id="result-title">Submitted</h2>
+        <p id="result-copy"></p>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
