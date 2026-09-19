@@ -1,89 +1,217 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="autumn">
+<html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kingdom Come</title>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
-    <link rel="icon" type="image/x-icon" href="/assets/icon.svg" />
-    <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>About &middot; Kingdom Come Youth Conference</title>
+  <meta name="description" content="Why Kingdom Come: our vision, mission, and core doctrinal values, and the three Connecticut churches that host the conference.">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..700,0..100,0..1&family=Public+Sans:wght@400;600&display=swap">
+  <link rel="stylesheet" href="/css/site.css">
 </head>
 
 <body>
-    <div class="navbar bg-base-100 border-b sticky top-0 z-50 shadow-sm">
-        <div class="flex-1">
-            <a href="/" class="ml-3">
-                <img src="/assets/logo.svg" alt="Kingdom Come" class="h-12">
-            </a>
-        </div>
-        <div class="flex-none">
-            <a href="/about.html" class="btn btn-ghost">About</a>
-        </div>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="/">
+        <span class="crown-mark brand-crown" aria-hidden="true"></span>
+        <span class="brand-word">Kingdom Come</span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a class="nav-link" aria-current="page" href="/about.html">About</a>
+        <a class="nav-link" href="/event.html">Event Info</a>
+        <!-- TODO: this is the 2025 JotForm. Swap for the 2026 form when it exists. -->
+        <a class="btn btn--accent" href="https://form.jotform.com/252937256082159" target="_blank"
+          rel="noopener">Register <span aria-hidden="true">&#8599;</span></a>
+      </nav>
+      <button class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="menu-overlay">
+        <span class="bars" aria-hidden="true"></span>
+        <span class="visually-hidden">Menu</span>
+      </button>
     </div>
+  </header>
 
-    <div class="max-w-4xl mx-auto px-4 py-16">
+  <div class="overlay" id="menu-overlay" hidden>
+    <button class="overlay-close" id="menu-close" aria-label="Close menu">&times;</button>
+    <a href="/">Home</a>
+    <a href="/about.html">About</a>
+    <a href="/event.html">Event Info</a>
+    <a class="btn btn--accent" href="https://form.jotform.com/252937256082159" target="_blank" rel="noopener">Register
+      <span aria-hidden="true">&#8599;</span></a>
+    <a class="overlay-small" href="/apply/">Counselor Application</a>
+  </div>
 
-        <div class="hero bg-base-200 rounded-box mb-12 py-10">
-            <div class="hero-content text-center">
-                <div class="max-w-2xl">
-                    <p class="text-2xl md:text-3xl font-serif italic text-secondary-focus leading-relaxed">
-                        "But seek first the kingdom of God and his righteousness, and all these things will be added to
-                        you."
-                    </p>
-                    <div class="divider w-1/2 mx-auto my-4"></div>
-                    <p class="text-sm font-bold uppercase tracking-widest text-base-content/70">
-                        Matthew 6:33
-                    </p>
-                </div>
+  <main id="main">
+
+    <section class="intro-hero">
+      <img class="intro-hero__img" src="/assets/photos/about-splash.jpg" alt="">
+      <div class="wrap intro-hero__grid">
+        <div class="intro-hero__verse">
+          <p class="verse">&ldquo;Your kingdom come, your will be done, on earth as it is in heaven.&rdquo;</p>
+          <p class="verse-ref">Matthew 6:10</p>
+        </div>
+        <div class="intro-pane">
+          <p class="eyebrow">About</p>
+          <h1 class="h1 mt-sm">Why Kingdom Come?</h1>
+          <div class="prose mt-lg">
+            <p>The kingdom of God is the good news that, in Jesus Christ, God&rsquo;s long-awaited reign has arrived.
+              Christ brings God&rsquo;s story of creation and redemption to its fullness, inviting us out of the false
+              kingdoms of self-rule and into the life God intended from the beginning. In his kingdom, we learn a new
+              way of being human, because our King himself is restoring the world. This is the vision we dare to
+              embrace: a community shaped by Christ, living under his rule, and joining in his mission to make all
+              things new.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--sunk">
+      <div class="wrap">
+
+        <div class="media-row">
+          <div class="media-row__text">
+            <p class="eyebrow">I. Vision</p>
+            <h2 class="h2 mt-sm">A present reality, not only a future hope</h2>
+            <div class="prose mt-lg">
+              <p>Our vision is to see young people discover God&rsquo;s kingdom not merely as a future hope but as a
+                present reality. We long for them to live under the gracious rule of the risen King, by receiving new
+                lives marked by holiness, truth, and love. As they seek first his kingdom and his righteousness, we pray
+                today&rsquo;s youth will grow to become disciples through whom God continues to make his kingdom visible
+                here on earth.</p>
             </div>
+          </div>
+          <div class="media-row__media">
+            <img src="/assets/photos/vision.jpg" alt="Students during a session at the conference">
+          </div>
         </div>
 
-        <h1 class="text-4xl mb-8">Why Kingdom Come?</h1>
-        <p class="mb-10 text-lg leading-relaxed">
-            The kingdom of God is the good news that, in Jesus Christ, God’s long-awaited reign has arrived.
-            Christ brings God’s story of creation and redemption to its fullness, inviting us out of the false
-            kingdoms of self-rule and into the life God intended from the beginning. In his kingdom, we learn
-            a new way of being human, because our King himself is restoring the world. This is the vision we
-            dare to embrace: a community shaped by Christ, living under his rule, and joining in his mission
-            to make all things new.
-        </p>
-
-        <h1 class="text-4xl mb-8">Winter 2025 Retreat Information</h1>
-        <ul class="list-disc list-inside space-y-2 text-lg">
-            <li><b>When:</b> December 28-30, 2025</li>
-            <li><b>Where:</b> Incarnation Center, 253 Bushy Hill Rd, Deep River, CT 06417</li>
-            <li><b>Speaker:</b> Pastor Byung Ham</li>
-            <li><b>Cost:</b> $210</li>
-            <li><b>Registration Deadline:</b> December 14, 2025</li>
-            <li>
-                <b>Registration Form:</b>
-                <a href="https://form.jotform.com/252937256082159" target="_blank"
-                    class="link link-neutral font-semibold">
-                    Register Here
-                </a>
-            </li>
-        </ul>
-
-        <h2 class="text-2xl mt-16 mb-4 font-bold">About the Speaker: Pastor Byung Ham</h2>
-        <div class="space-y-4 text-lg leading-relaxed">
-            <p>
-                In 1980 Byung Ham was born in S. Korea, then, as an infant immigrated to Baltimore, MD.
-                (He has also lived in Chicago, IL, Houston, TX and Atlanta, GA.)
-            </p>
-            <p>
-                Without the saving grace of Jesus Christ, Byung used hip-hop, sports, and pleasure to find
-                meaning in life. After trusting his life to the LORD, Byung believes that, "to live is Christ
-                and to die is gain." He was trained and equipped at Washington Bible College and Capital Bible Seminary.
-            </p>
-            <p>
-                This may be difficult to believe but Byung delivered his first sermon at the age of nineteen!
-                He and Melanie are newlyweds and reside in Clarksville, Maryland.
-            </p>
+        <div class="media-row media-row--flip">
+          <div class="media-row__text">
+            <p class="eyebrow">II. Mission</p>
+            <h2 class="h2 mt-sm">Forming citizens of the kingdom</h2>
+            <div class="prose mt-lg">
+              <p>To form students as citizens of God&rsquo;s kingdom, through the proclamation of the Word, prayer, and
+                Christ-centered friendships.</p>
+            </div>
+          </div>
+          <div class="media-row__media">
+            <img src="/assets/photos/mission.jpg" alt="Students praying together">
+          </div>
         </div>
 
-        <img src="/assets/speaker.jpg" class="w-80 mx-auto rounded-lg shadow-lg mt-10" alt="Pastor Byung Ham">
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <p class="eyebrow">III. Core Doctrinal Values</p>
+        <h2 class="h2 mt-sm">What we believe</h2>
+        <div class="values">
+          <div class="value">
+            <h3>Holy Trinity</h3>
+            <p>We believe in the one eternal God&mdash;Father, Son, and Holy Spirit&mdash;whose gracious reign over all creation is the source and end of all life. From eternity, the triune God has purposed to make all things new and to gather for himself a people who live under his loving rule.</p>
+          </div>
+          <div class="value">
+            <h3>Christ Jesus</h3>
+            <p>We believe Jesus is the Word made flesh, fully God and fully man, in whom the kingdom of God has drawn near, and who through his death and resurrection has been revealed as the true and risen King over all things, in heaven and on earth.</p>
+          </div>
+          <div class="value">
+            <h3>Bible</h3>
+            <p>We believe the Holy Scriptures are inspired by the Holy Spirit and are God&rsquo;s infallible and trustworthy Word. Through them, God reveals the good news of his kingdom, and helps us to walk within it, by teaching us the way of Christ and by forming us to live as faithful citizens of heaven.</p>
+          </div>
+          <div class="value">
+            <h3>Church</h3>
+            <p>We believe the Church is the body of Christ, into which we are incorporated through faith and baptism. As the visible community of God&rsquo;s kingdom, the Church bears witness to Christ&rsquo;s Lordship through worship, discipleship, fellowship, and mission, expressed in the committed life of a local, Christ-centered congregation.</p>
+          </div>
+          <div class="value">
+            <h3>Human Condition</h3>
+            <p>We believe all humanity is enslaved to the powers of sin and death, as we live under rival kingdoms that rebel against God and distort his good creation. Alienated from God and from our true humanity, we continually fall short of his glory, and apart from the Spirit&rsquo;s grace we cannot enter his kingdom.</p>
+          </div>
+          <div class="value">
+            <h3>Salvation</h3>
+            <p>We believe Jesus Christ defeated the powers of sin and death, and has opened the way into God&rsquo;s kingdom. Through his incarnation, death, resurrection, and ascension, and through the Spirit&rsquo;s renewing work, we are forgiven, made new, and called forth to live under the rule of the risen King, in holiness, truth, and love.</p>
+          </div>
+          <div class="value">
+            <h3>Christ&rsquo;s Return</h3>
+            <p>We believe the risen Lord will return to judge the living and the dead, renew all things, and bring God&rsquo;s kingdom to its glorious fulfillment. Till that day, we are called to seek first his kingdom by proclaiming the gospel, making disciples, and bearing faithful witness, so that God&rsquo;s will may be done on earth as it is in heaven.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--sunk">
+      <div class="wrap">
+        <p class="eyebrow">Hosted by</p>
+        <h2 class="h2 mt-sm">Three churches, one conference</h2>
+        <div class="churches">
+          <div class="church">
+            <img src="/assets/photos/church-ascent.png" alt="">
+            <a href="https://ascentnewhaven.org/" target="_blank" rel="noopener">Church of the Ascent</a>
+          </div>
+          <div class="church">
+            <img src="/assets/photos/church-covenant.png" alt="">
+            <a href="https://covenantchapelct.com" target="_blank" rel="noopener">Covenant Chapel</a>
+          </div>
+          <div class="church">
+            <img src="/assets/photos/church-grace.png" alt="">
+            <a href="https://www.gracefellowshipct.com/" target="_blank" rel="noopener">New England Grace
+              Presbyterian</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <span class="crown-mark brand-crown" aria-hidden="true"></span>
+          <span class="brand-word">Kingdom Come</span>
+          <p>An annual winter conference for middle and high school students, hosted by three Connecticut churches.</p>
+        </div>
+
+        <nav class="footer-col" aria-label="Footer">
+          <span class="eyebrow">Pages</span>
+          <a href="/">Home</a>
+          <a href="/about.html">About</a>
+          <a href="/event.html">Event Info</a>
+          <a href="/apply/">Counselor Application</a>
+          <a href="https://form.jotform.com/252937256082159" target="_blank" rel="noopener">Register &#8599;</a>
+        </nav>
+
+        <div class="footer-col">
+          <span class="eyebrow">Contact</span>
+          <a href="mailto:kingdomcomeyouthconference@gmail.com">kingdomcomeyouthconference@gmail.com</a>
+          <a class="with-icon" href="https://www.instagram.com/kingdomcomeyouthconference" target="_blank"
+            rel="noopener"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
+              stroke-width="1.9" aria-hidden="true"><rect x="3.2" y="3.2" width="17.6" height="17.6" rx="5"></rect>
+              <circle cx="12" cy="12" r="4"></circle>
+              <circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"></circle>
+            </svg>@kingdomcomeyouthconference</a>
+          <span class="eyebrow eyebrow--second">Hosting churches</span>
+          <a href="https://ascentnewhaven.org/" target="_blank" rel="noopener">Church of the Ascent</a>
+          <a href="https://covenantchapelct.com" target="_blank" rel="noopener">Covenant Chapel</a>
+          <a href="https://www.gracefellowshipct.com/" target="_blank" rel="noopener">New England Grace Presbyterian</a>
+        </div>
+      </div>
+
+      <div class="colophon">
+        <span>&copy; <span id="year">2026</span> Kingdom Come Youth Conference</span>
+        <span>December 28&ndash;30, 2026 &middot; Camp Wightman, Griswold, CT</span>
+      </div>
     </div>
+  </footer>
+
+  <script src="/js/site.js"></script>
 </body>
 
 </html>

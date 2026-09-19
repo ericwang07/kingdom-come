@@ -1,107 +1,283 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="autumn">
+<html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kingdom Come</title>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
-    <link rel="icon" type="image/x-icon" href="/assets/icon.svg" />
-    <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Kingdom Come Youth Conference</title>
+  <meta name="description"
+    content="An annual winter conference for middle and high school students. December 28–30, 2026 at Camp Wightman in Griswold, Connecticut.">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..700,0..100,0..1&family=Public+Sans:wght@400;600&display=swap">
+  <link rel="stylesheet" href="/css/site.css">
 </head>
 
 <body>
-    <div class="navbar bg-base-100 border-b sticky top-0 z-50 shadow-sm">
-        <div class="flex-1">
-            <a href="/" class="ml-3">
-                <img src="/assets/logo.svg" alt="Kingdom Come" class="h-12">
-            </a>
-        </div>
-        <div class="flex-none gap-2 mr-3">
-            <a href="/apply/" class="btn btn-sm btn-outline">Counselor Application</a>
-            <a href="/about.html" class="btn btn-ghost">About</a>
-        </div>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="/">
+        <span class="crown-mark brand-crown" aria-hidden="true"></span>
+        <span class="brand-word">Kingdom Come</span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a class="nav-link" href="/about.html">About</a>
+        <a class="nav-link" href="/event.html">Event Info</a>
+        <!-- TODO: this is the 2025 JotForm. Swap for the 2026 form when it exists. -->
+        <a class="btn btn--accent" href="https://form.jotform.com/252937256082159" target="_blank"
+          rel="noopener">Register <span aria-hidden="true">&#8599;</span></a>
+      </nav>
+      <button class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="menu-overlay">
+        <span class="bars" aria-hidden="true"></span>
+        <span class="visually-hidden">Menu</span>
+      </button>
     </div>
+  </header>
 
-    <div class="flex flex-col md:flex-row">
+  <div class="overlay" id="menu-overlay" hidden>
+    <button class="overlay-close" id="menu-close" aria-label="Close menu">&times;</button>
+    <a href="/">Home</a>
+    <a href="/about.html">About</a>
+    <a href="/event.html">Event Info</a>
+    <a class="btn btn--accent" href="https://form.jotform.com/252937256082159" target="_blank" rel="noopener">Register
+      <span aria-hidden="true">&#8599;</span></a>
+    <a class="overlay-small" href="/apply/">Counselor Application</a>
+  </div>
 
-        <div class="flex-1 flex items-center justify-center px-6 py-10 min-h-[90vh] md:min-h-[calc(100vh-4rem)]">
-            <div class="text-center max-w-xl w-full">
-                <img src="/assets/logo.svg" alt="Kingdom Come" class="w-3/4 md:w-full max-w-md mx-auto mb-8 md:mb-12">
+  <main id="main">
 
-                <p class="text-sm md:text-2xl font-heading font-bold text-gray-700 mb-8 md:mb-20 tracking-wide">
-                    ANNUAL YOUTH WINTER RETREAT
-                </p>
+    <section class="hero">
+      <div class="hero-slides" aria-hidden="true">
+        <div class="hero-slide" data-active><img src="/assets/photos/hero-1.jpg" alt=""></div>
+      </div>
 
-                <a href="https://form.jotform.com/252937256082159"
-                    class="btn btn-neutral w-full md:w-auto mb-10 md:mb-20" target="_blank">
-                    Register Here
-                </a>
+      <div class="hero-inner">
+        <span class="crown-mark hero-crown" aria-hidden="true"></span>
+        <h1 class="verse">&ldquo;But seek first the kingdom of God and his righteousness, and all these things will be
+          added to you.&rdquo;</h1>
+        <p class="verse-ref">Matthew 6:33</p>
+        <p class="hero-meta">Three days of the Word, prayer, and Christ-centered friendship<br>for middle and high
+          school students.</p>
+        <p class="hero-meta">December 28&ndash;30, 2026 &middot; Camp Wightman, Connecticut</p>
+        <a class="btn btn--accent" href="https://form.jotform.com/252937256082159" target="_blank" rel="noopener">
+          Register <span aria-hidden="true">&#8599;</span></a>
+      </div>
+    </section>
 
-                <p class="text-sm md:text-base font-light text-gray-500 flex flex-col md:block gap-2">
-                    <a href="https://ascentnewhaven.org/" class="link link-neutral" target="_blank">Church of the
-                        Ascent</a>
-                    <span class="hidden md:inline">•</span>
-                    <a href="https://covenantchapelct.com" class="link link-neutral" target="_blank">Covenant Chapel</a>
-                    <span class="hidden md:inline">•</span>
-                    <a href="https://www.gracefellowshipct.com/" class="link link-neutral" target="_blank">New England
-                        Grace Presbyterian</a>
-                </p>
+
+
+    <section class="section faq-scene" id="faq">
+      <div class="faq-scatter" aria-hidden="true">
+        <figure class="snap" style="--side:-1;--off:30.64rem;--y:3.3rem;--r:4.7deg;--w:13.5rem;--ar:3 / 4"><img src="/assets/photos/collage-1.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:1;--off:18.99rem;--y:4.2rem;--r:-16.6deg;--w:11.9rem;--ar:4 / 3"><img src="/assets/photos/collage-2.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:-1;--off:11.68rem;--y:5.8rem;--r:19.1deg;--w:14.8rem;--ar:1"><img src="/assets/photos/collage-3.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:1;--off:12.41rem;--y:15.3rem;--r:-15.7deg;--w:15.4rem;--ar:3 / 4"><img src="/assets/photos/collage-4.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:1;--off:30.67rem;--y:15.9rem;--r:2.1deg;--w:14.6rem;--ar:4 / 3"><img src="/assets/photos/collage-5.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:-1;--off:19.63rem;--y:18.0rem;--r:-19.1deg;--w:12.0rem;--ar:1"><img src="/assets/photos/collage-6.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:1;--off:20.83rem;--y:28.9rem;--r:3.0deg;--w:14.7rem;--ar:3 / 4"><img src="/assets/photos/collage-7.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:-1;--off:9.88rem;--y:29.0rem;--r:7.2deg;--w:14.8rem;--ar:4 / 3"><img src="/assets/photos/collage-8.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:-1;--off:29.53rem;--y:31.3rem;--r:0.4deg;--w:13.9rem;--ar:1"><img src="/assets/photos/collage-9.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:-1;--off:20.64rem;--y:41.6rem;--r:8.1deg;--w:13.0rem;--ar:3 / 4"><img src="/assets/photos/collage-10.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:1;--off:30.29rem;--y:42.6rem;--r:-3.8deg;--w:14.7rem;--ar:4 / 3"><img src="/assets/photos/collage-11.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:1;--off:9.07rem;--y:44.1rem;--r:10.6deg;--w:12.4rem;--ar:1"><img src="/assets/photos/collage-12.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:-1;--off:9.34rem;--y:55.0rem;--r:-7.2deg;--w:13.0rem;--ar:3 / 4"><img src="/assets/photos/collage-13.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:1;--off:20.33rem;--y:56.0rem;--r:17.4deg;--w:12.8rem;--ar:4 / 3"><img src="/assets/photos/collage-14.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:-1;--off:29.05rem;--y:56.8rem;--r:-5.5deg;--w:12.1rem;--ar:1"><img src="/assets/photos/collage-15.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:1;--off:8.73rem;--y:67.3rem;--r:-3.0deg;--w:13.0rem;--ar:3 / 4"><img src="/assets/photos/collage-16.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:1;--off:29.45rem;--y:68.9rem;--r:14.0deg;--w:12.1rem;--ar:4 / 3"><img src="/assets/photos/collage-17.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:-1;--off:21.54rem;--y:68.9rem;--r:-10.6deg;--w:15.0rem;--ar:1"><img src="/assets/photos/collage-18.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:1;--off:17.81rem;--y:82.5rem;--r:-0.4deg;--w:12.0rem;--ar:3 / 4"><img src="/assets/photos/collage-19.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:-1;--off:9.34rem;--y:82.5rem;--r:-1.3deg;--w:15.8rem;--ar:4 / 3"><img src="/assets/photos/collage-20.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:-1;--off:30.64rem;--y:82.9rem;--r:-2.1deg;--w:14.6rem;--ar:1"><img src="/assets/photos/collage-21.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:-1;--off:18.42rem;--y:95.4rem;--r:6.4deg;--w:11.7rem;--ar:3 / 4"><img src="/assets/photos/collage-22.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:1;--off:10.34rem;--y:96.2rem;--r:-11.5deg;--w:15.9rem;--ar:4 / 3"><img src="/assets/photos/collage-23.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:1;--off:31.26rem;--y:96.6rem;--r:-9.8deg;--w:14.1rem;--ar:1"><img src="/assets/photos/collage-24.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:1;--off:21.75rem;--y:108.7rem;--r:20.0deg;--w:15.0rem;--ar:3 / 4"><img src="/assets/photos/collage-25.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:-1;--off:9.60rem;--y:109.0rem;--r:13.2deg;--w:12.3rem;--ar:4 / 3"><img src="/assets/photos/collage-26.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:-1;--off:29.62rem;--y:109.3rem;--r:9.8deg;--w:13.4rem;--ar:1"><img src="/assets/photos/collage-27.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:1;--off:28.55rem;--y:119.6rem;--r:-4.7deg;--w:12.1rem;--ar:3 / 4"><img src="/assets/photos/collage-28.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:1;--off:10.87rem;--y:120.3rem;--r:-14.9deg;--w:14.3rem;--ar:4 / 3"><img src="/assets/photos/collage-29.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:-1;--off:20.39rem;--y:121.8rem;--r:-8.9deg;--w:15.9rem;--ar:1"><img src="/assets/photos/collage-30.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:-1;--off:30.67rem;--y:133.3rem;--r:-6.4deg;--w:14.7rem;--ar:3 / 4"><img src="/assets/photos/collage-31.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:-1;--off:8.09rem;--y:134.6rem;--r:3.8deg;--w:12.4rem;--ar:4 / 3"><img src="/assets/photos/collage-32.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:1;--off:18.44rem;--y:135.7rem;--r:12.3deg;--w:11.6rem;--ar:1"><img src="/assets/photos/collage-33.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:1;--off:11.36rem;--y:145.5rem;--r:11.5deg;--w:15.6rem;--ar:3 / 4"><img src="/assets/photos/collage-34.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:1;--off:30.58rem;--y:146.7rem;--r:-17.4deg;--w:13.9rem;--ar:4 / 3"><img src="/assets/photos/collage-35.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:-1;--off:19.64rem;--y:148.0rem;--r:15.7deg;--w:13.1rem;--ar:1"><img src="/assets/photos/collage-36.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:1;--off:19.86rem;--y:158.8rem;--r:16.6deg;--w:12.1rem;--ar:3 / 4"><img src="/assets/photos/collage-37.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:-1;--off:9.50rem;--y:160.7rem;--r:14.9deg;--w:13.3rem;--ar:4 / 3"><img src="/assets/photos/collage-38.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:-1;--off:30.63rem;--y:161.0rem;--r:-8.1deg;--w:15.2rem;--ar:1"><img src="/assets/photos/collage-39.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:1;--off:11.04rem;--y:171.5rem;--r:8.9deg;--w:15.6rem;--ar:3 / 4"><img src="/assets/photos/collage-40.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:-1;--off:18.79rem;--y:172.2rem;--r:18.3deg;--w:11.7rem;--ar:4 / 3"><img src="/assets/photos/collage-41.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:1;--off:29.04rem;--y:173.8rem;--r:-13.2deg;--w:11.6rem;--ar:1"><img src="/assets/photos/collage-42.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:1;--off:21.23rem;--y:186.4rem;--r:-18.3deg;--w:12.4rem;--ar:3 / 4"><img src="/assets/photos/collage-43.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:-1;--off:29.86rem;--y:187.4rem;--r:-12.3deg;--w:12.4rem;--ar:4 / 3"><img src="/assets/photos/collage-44.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:-1;--off:8.73rem;--y:187.8rem;--r:1.3deg;--w:13.5rem;--ar:1"><img src="/assets/photos/collage-45.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:-1;--off:20.80rem;--y:197.4rem;--r:-14.0deg;--w:12.4rem;--ar:3 / 4"><img src="/assets/photos/collage-46.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:1;--off:9.89rem;--y:197.9rem;--r:5.5deg;--w:15.1rem;--ar:4 / 3"><img src="/assets/photos/collage-47.jpg" alt="" loading="lazy"></figure>
+        <figure class="snap" style="--side:1;--off:32.53rem;--y:198.1rem;--r:-20.0deg;--w:15.2rem;--ar:1"><img src="/assets/photos/collage-48.jpg" alt="" loading="lazy"></figure>
+      </div>
+
+      <div class="wrap">
+        <div class="faq-panel">
+          <p class="eyebrow">Questions</p>
+            <h2 class="h2">Everything you might want to ask</h2>
+
+            <div class="faq-group">
+              <span class="eyebrow">Before you come</span>
+              <details class="faq">
+                <summary>Who can attend?</summary>
+                <p>Middle and high school students. If you&rsquo;re not sure whether you&rsquo;re eligible, email us and
+                  we&rsquo;ll let you know.</p>
+              </details>
+              <details class="faq">
+                <summary>When and where is it?</summary>
+                <p>December 28&ndash;30, 2026, at Camp Wightman &mdash; 207 Coal Pit Hill Rd, Griswold, CT 06351.</p>
+              </details>
+              <details class="faq">
+                <summary>How much does it cost, and what&rsquo;s included?</summary>
+                <p>To be announced. We&rsquo;ll post the cost here before registration opens.</p>
+              </details>
+              <details class="faq">
+                <summary>When is the registration deadline?</summary>
+                <p>To be announced.</p>
+              </details>
+              <details class="faq">
+                <summary>Is financial aid available?</summary>
+                <p>To be announced. In the meantime, please reach out &mdash; we don&rsquo;t want cost to be the reason
+                  someone stays home.</p>
+              </details>
+              <details class="faq">
+                <summary>Is transportation provided?</summary>
+                <p>To be announced.</p>
+              </details>
+              <details class="faq">
+                <summary>Do I have to be a Christian, or attend one of the hosting churches?</summary>
+                <p>To be announced.</p>
+              </details>
+              <details class="faq">
+                <summary>What if I don&rsquo;t know anyone going?</summary>
+                <p>To be announced.</p>
+              </details>
             </div>
+
+            <div class="faq-group">
+              <span class="eyebrow">While you&rsquo;re there</span>
+              <details class="faq">
+                <summary>What should I pack?</summary>
+                <p>Warm layers, a sleeping bag and pillow, toiletries, a Bible and a journal. The full checklist,
+                  and the short list of what to leave at home, is on the <a href="/event.html">Event Info</a> page.</p>
+              </details>
+              <details class="faq">
+                <summary>What&rsquo;s the phone policy?</summary>
+                <p>Students who bring a phone hand it to their pastor at the start, and it is kept safe until the end
+                  of the retreat. Parents and students who need to reach each other can do so through a leader&rsquo;s
+                  phone or the retreat center.</p>
+              </details>
+              <details class="faq">
+                <summary>What are the sleeping arrangements?</summary>
+                <p>To be announced.</p>
+              </details>
+              <details class="faq">
+                <summary>Are meals provided? Can you accommodate allergies or dietary restrictions?</summary>
+                <p>To be announced.</p>
+              </details>
+              <details class="faq">
+                <summary>What does a typical day look like?</summary>
+                <p>The schedule will be posted on the <a href="/event.html">Event Info</a> page once it&rsquo;s set.</p>
+              </details>
+              <details class="faq">
+                <summary>What if I take medication or have a medical need?</summary>
+                <p>To be announced.</p>
+              </details>
+            </div>
+
+            <div class="faq-group">
+              <span class="eyebrow">For parents</span>
+              <details class="faq">
+                <summary>Who is supervising? Are counselors background-checked?</summary>
+                <p>To be announced.</p>
+              </details>
+              <details class="faq">
+                <summary>How do I reach my child during the conference?</summary>
+                <p>To be announced.</p>
+              </details>
+              <details class="faq">
+                <summary>What is the refund and cancellation policy?</summary>
+                <p>To be announced.</p>
+              </details>
+              <details class="faq">
+                <summary>What are the behavior expectations?</summary>
+                <p>Participant guidelines will be posted on the <a href="/event.html">Event Info</a> page.</p>
+              </details>
+            </div>
+
+            <div class="faq-group">
+              <span class="eyebrow">Getting involved</span>
+              <details class="faq">
+                <summary>How do I apply to be a counselor?</summary>
+                <p>Through the <a href="/apply/">counselor application</a>. It takes about fifteen minutes, and it also
+                  asks for a pastoral reference.</p>
+              </details>
+              <details class="faq">
+                <summary>How can I support or pray for the conference?</summary>
+                <p>To be announced.</p>
+              </details>
+            </div>
+          </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <span class="crown-mark brand-crown" aria-hidden="true"></span>
+          <span class="brand-word">Kingdom Come</span>
+          <p>An annual winter conference for middle and high school students, hosted by three Connecticut churches.</p>
         </div>
 
-        <div class="w-full md:flex-1 bg-gray-100 h-[60vh] md:h-auto relative">
-            <script src="https://cdn.jsdelivr.net/npm/publicalbum@latest/embed-ui.min.js" async></script>
-            <div class="pa-carousel-widget" style="width:100%; height:100%; display:none;"
-                data-link="https://photos.app.goo.gl/xqTe4pZbXQ4qmgxD9" data-description="Shared album · Tap to view!"
-                data-delay="3">
-                <object
-                    data="https://lh3.googleusercontent.com/pw/AP1GczM1aA_9acTvYkqvsXhiA1Kt5b8_IrEUtdfoAc4vZsvTTrj4zp1HbicTLu9nMd0B5SEqAi3bFVUS3intA3I2CbLT7G4akH_mFSXrAJKd1Ysypc0MZLA=w1920-h1080"></object>
-                <object
-                    data="https://lh3.googleusercontent.com/pw/AP1GczNjLtX7gVf1ROea-aP6ySqj_KUuAP27w_uRs3L55Ad_oUau7on6FJkk2vxlYsJ9EFEU4rrV9iC9CrDzuOiR3q9HWl17W5IcwRuVYCzJ_DEV0UWVh-Q=w1920-h1080"></object>
-                <object
-                    data="https://lh3.googleusercontent.com/pw/AP1GczOtQXLLF6ujtHJouZHSiKGdLjwZh3-0LlFZuSObougI6d4BTw1ukGljHTnYTCR5x3CdB3ug0gvU2eJ_a4p-XSnB_wol_Le3-YcypNo13Uy88wIh_6c=w1920-h1080"></object>
-                <object
-                    data="https://lh3.googleusercontent.com/pw/AP1GczMEkp46q2OesTUY3S-ctiaua5izBoPZkwxfC56NWu4Cr1THMuHdEJThrCYUJEpsSdwggn48qnj7InbZcyGwqul2cuy0y2LyYU3I7KJPjTohOKm_XBQ=w1920-h1080"></object>
-                <object
-                    data="https://lh3.googleusercontent.com/pw/AP1GczO8TezjSXfw6yMhYVi2gVURwWg6W1zrnV__oOc1r1p3MfvOCHUgCod1UQ5ksN21lOnwd4GB8yzC6xjqKFqJctkX2Y_EaJuxeCbHbxhqfMTHDIxv8S4=w1920-h1080"></object>
-                <object
-                    data="https://lh3.googleusercontent.com/pw/AP1GczNPP67iYN9YbJpX2AU-QVltsPZoQZV_SWlrUQ9c2yNP6HVXSPc-zL5URv1irV_IxXC5Q6TG92s1GcBphiJVcsz0TW5VrfOy0s_0jieMN7z1SS2a8Eg=w1920-h1080"></object>
-                <object
-                    data="https://lh3.googleusercontent.com/pw/AP1GczMPR5owViVlxajJNaa0NvYqSP0z39iwfq21kvDPvU0IuihMCHTOv5NM_E74oYQ5FTeV9tvE7yKmOz7XK743AvVmUgrT7qs8ilj-shwj3DKETA6HsaY=w1920-h1080"></object>
-                <object
-                    data="https://lh3.googleusercontent.com/pw/AP1GczPbsQAS8YJI5TIFSb3x2cvnNbIWsvz2w9QbkbBIHDgJ61_ea4p0RQMf615lF820wbXWwwVzD5PiEHajPJOolFz7yl6w7JCE30yjulksOAon3_w_sLo=w1920-h1080"></object>
-                <object
-                    data="https://lh3.googleusercontent.com/pw/AP1GczMhUnhZ-G-mHN3gzKW2GocTJ8vijyj8Z8jXdP2o6waYbsmp3YpLxUXB4ioVUwGR43zwGFIuF747Xu4Q6E8CyHOlcB-7TZWkXoqc3nCHdbLCejFYEHU=w1920-h1080"></object>
-                <object
-                    data="https://lh3.googleusercontent.com/pw/AP1GczMZEFqS0Dv44Xa8c4w-rYxVnTsP6Ts3A4Qj7lZNcxALy047BwwMpsvMJoNh9xSadnRj4oOfcDLclwRCaT9s6JHbrNK9S_9edHzccjrmEz-WlBH5YKk=w1920-h1080"></object>
-                <object
-                    data="https://lh3.googleusercontent.com/pw/AP1GczOwY4h1YS65_ORPK3kblSzhn6vRPWwhG-YE5Bmw7n_hECvi-pGN9Z5aLzlsvujmMHZC75l8grvQLa58ezIvWd-rmH6MyFvNTL3c5fBMWoyJnlC43JU=w1920-h1080"></object>
-                <object
-                    data="https://lh3.googleusercontent.com/pw/AP1GczNcrQKg2tekSWZ8yMt7p9h_ZYLgNCQHFmGL4dmDVCEpK7hYD1zIEOmaKVRmAVyezo0C16-OpW0eUpItpMCXSoXrMD8qIGZD7iVU2VoRAD2lttg-_jc=w1920-h1080"></object>
-                <object
-                    data="https://lh3.googleusercontent.com/pw/AP1GczNTuAaNpGqlz483H2QbVxVIYl4c_GTcy1z1VMBp8CuJJpatQxMSPD795haFbqT_CSlyyVtCeOikidZrW2CSWZwsEYeaYV-kckwNUzeej9JoYGKtRko=w1920-h1080"></object>
-                <object
-                    data="https://lh3.googleusercontent.com/pw/AP1GczNUCoH1fW-vdKFBcYiA2ZYslkR3qvLdeuRQ9-qnG41eGqSE-89rEEsICEzj6TPqL36bdN7rlxd5wwFo4XW6DQawRS0jSZW7bpWHL2ijGqkjzrPkaBE=w1920-h1080"></object>
-                <object
-                    data="https://lh3.googleusercontent.com/pw/AP1GczNxguinVv0DGGG5U9UA5npTZcxSOAWFtlwgmCEEKPX732xnfKk0HI6YliZ0zePtS31QylXa9_X5Qofg27anHIPjIOzMyRmxEsayyoIdl8skvOKLv5o=w1920-h1080"></object>
-                <object
-                    data="https://lh3.googleusercontent.com/pw/AP1GczNn5zFG47201ozlSz7MKrp2K-BB1G9syffRl4YJsuHpAQMY97iT4o__yviqOL0-jpWgf291cePG79BcbsW1bpU1cPKp3PLo8GFSn_Pw7tMxnbArMNQ=w1920-h1080"></object>
-                <object
-                    data="https://lh3.googleusercontent.com/pw/AP1GczPgnJV7cP-nWCO4KAebab1tqnj8BaouZiuM4I-PIIM274uCL-rxMa9vNv0Txf-lkwkdytXjzuZMWxL2rwKHkJniTHLGAVQpTOLqG1TVMqXFC8IhwEA=w1920-h1080"></object>
-                <object
-                    data="https://lh3.googleusercontent.com/pw/AP1GczN36ym1d27xwc1sE4HcQqNlqVAJCiWx2lqo3MXmij3VnXhnSrApIhZ2MAinDHneg5pUU74kK-WgkZg_R4Itu8yIulPHC5CSDn5QgbNqm9PuAMhFml0=w1920-h1080"></object>
-                <object
-                    data="https://lh3.googleusercontent.com/pw/AP1GczNqBh4Fz95y9Eiy_tBoTrLm7fG4S_nw6x3jRCcZQ97jHN_c09C2eUdbFda7BcdPxtvfBZ5-QEfwH7ab4DWyZMX0fuh-0_fON6RiUY_XTpJCUq9Fdyc=w1920-h1080"></object>
-                <object
-                    data="https://lh3.googleusercontent.com/pw/AP1GczPqFI-r3Wu4gAKIdNDWESldrwjWSJJciDjoDcSCXtqsMS0vDsSfMe5zENbW8cDkUoqQyaGzLoWGnDYuGrFY-aXPowzTRSgcwdooGn6_wnp3xFtlA6Q=w1920-h1080"></object>
-                <object
-                    data="https://lh3.googleusercontent.com/pw/AP1GczM2Uv7Qi-t9Hz4LG4jqFROZeQeLVervZVv9u4joyHP_YVR4zy0I3cf9POmH-JIRuhQYLuEv26mPfUeubDiBDtdXW6AYJW7MCVxcaZL-S6LZW7uhSxk=w1920-h1080"></object>
-                <object
-                    data="https://lh3.googleusercontent.com/pw/AP1GczP8y67f73FCuuh_0OV8Ar3gSKxSp2GSdlxoB7_RRchjdPrjA8sig4drXsd8_WrCU1vymRrC_7yVMtMgi4fWzszHOABExieiDlAFfW7y2eIyGeBWkxw=w1920-h1080"></object>
-            </div>
+        <nav class="footer-col" aria-label="Footer">
+          <span class="eyebrow">Pages</span>
+          <a href="/">Home</a>
+          <a href="/about.html">About</a>
+          <a href="/event.html">Event Info</a>
+          <a href="/apply/">Counselor Application</a>
+          <a href="https://form.jotform.com/252937256082159" target="_blank" rel="noopener">Register &#8599;</a>
+        </nav>
+
+        <div class="footer-col">
+          <span class="eyebrow">Contact</span>
+          <a href="mailto:kingdomcomeyouthconference@gmail.com">kingdomcomeyouthconference@gmail.com</a>
+          <a class="with-icon" href="https://www.instagram.com/kingdomcomeyouthconference" target="_blank"
+            rel="noopener"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
+              stroke-width="1.9" aria-hidden="true"><rect x="3.2" y="3.2" width="17.6" height="17.6" rx="5"></rect>
+              <circle cx="12" cy="12" r="4"></circle>
+              <circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"></circle>
+            </svg>@kingdomcomeyouthconference</a>
+          <span class="eyebrow eyebrow--second">Hosting churches</span>
+          <a href="https://ascentnewhaven.org/" target="_blank" rel="noopener">Church of the Ascent</a>
+          <a href="https://covenantchapelct.com" target="_blank" rel="noopener">Covenant Chapel</a>
+          <a href="https://www.gracefellowshipct.com/" target="_blank" rel="noopener">New England Grace Presbyterian</a>
         </div>
+      </div>
+
+      <div class="colophon">
+        <span>&copy; <span id="year">2026</span> Kingdom Come Youth Conference</span>
+        <span>December 28&ndash;30, 2026 &middot; Camp Wightman, Griswold, CT</span>
+      </div>
     </div>
+  </footer>
+
+  <script src="/js/site.js"></script>
 </body>
 
 </html>
