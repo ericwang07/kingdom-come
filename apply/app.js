@@ -1,9 +1,13 @@
 const CONFIG = {
-  // Change this to the email address that should receive applications and references.
-  recipientEmail: "allenliu878581@gmail.com",
+  // Change this list to the email addresses that should receive applications and references.
+  recipientEmails: [
+    "allenliu878581@gmail.com",
+    "david.choi@aya.yale.edu",
+    "fred.porter@gmail.com",
+  ],
 
   // Optional: paste a Formspree/Getform/Basin/Web3Forms endpoint here.
-  // If blank, the site uses FormSubmit with the recipientEmail above.
+  // If blank, the site uses FormSubmit with the recipientEmails above.
   formEndpoint: "",
 
   // Optional: paste a Google Apps Script web app URL here to save submissions to a Google Sheet.
@@ -189,8 +193,8 @@ function clearAutosave(storageKey) {
 }
 
 async function submitToEndpoint(type, values, subject, message) {
-  const endpoint = getSubmissionEndpoint();
-  if (!endpoint) {
+  const endpoints = getSubmissionEndpoints();
+  if (!endpoints.length) {
     throw new Error("No submission endpoint configured.");
   }
 
@@ -202,24 +206,30 @@ async function submitToEndpoint(type, values, subject, message) {
     ...values,
   };
 
-  const response = await fetch(endpoint, {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(payload),
-  });
+  await Promise.all(
+    endpoints.map(async (endpoint) => {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
-  if (!response.ok) {
-    throw new Error(`Submission failed with status ${response.status}.`);
-  }
+      if (!response.ok) {
+        throw new Error(`Submission failed with status ${response.status}.`);
+      }
+    })
+  );
 }
 
-function getSubmissionEndpoint() {
-  if (CONFIG.formEndpoint) return CONFIG.formEndpoint;
-  if (!CONFIG.recipientEmail || CONFIG.recipientEmail === "your-email@example.com") return "";
-  return `https://formsubmit.co/ajax/${encodeURIComponent(CONFIG.recipientEmail)}`;
+function getSubmissionEndpoints() {
+  if (CONFIG.formEndpoint) return [CONFIG.formEndpoint];
+
+  return CONFIG.recipientEmails
+    .filter((email) => email && email !== "your-email@example.com")
+    .map((email) => `https://formsubmit.co/ajax/${encodeURIComponent(email)}`);
 }
 
 async function submitToGoogleSheet(type, values, message) {
