@@ -149,7 +149,12 @@ a { color: var(--ink); text-underline-offset: .18em; }
   gap: .5em;
   padding: .7rem 1.35rem;
   border: 1px solid transparent;
-  border-radius: 999px;
+  /* 3px, the same radius as the .tba chip. The site has exactly three radii —
+     2px on the focus ring, 3px here and on the chip — and is otherwise square
+     corners and hairlines throughout: the fact grids, the plaque, the FAQ
+     panel, the scattered prints. A 999px pill was the one round shape in that
+     system, and it landed on the most prominent element on the page. */
+  border-radius: 3px;
   font-family: var(--font-body);
   font-size: var(--step-small);
   font-weight: 600;
@@ -180,6 +185,21 @@ a { color: var(--ink); text-underline-offset: .18em; }
   padding-top: env(safe-area-inset-top, 0px);
   background: #FFFFFF;
   border-bottom: 1px solid var(--rule);
+  transition: background-color .25s ease-out;
+}
+
+/* Solid at rest; once content passes underneath it turns to frosted glass.
+   The blur is what makes the translucency read as deliberate — without it,
+   photos scrolling past just muddy the type. */
+.site-header[data-scrolled] {
+  background: rgba(255, 255, 255, .72);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+}
+
+/* No backdrop-filter (older Firefox): stay near-opaque rather than muddy. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .site-header[data-scrolled] { background: rgba(255, 255, 255, .94); }
 }
 
 .site-header > .wrap {
@@ -226,7 +246,9 @@ a { color: var(--ink); text-underline-offset: .18em; }
   position: relative;
   font-size: var(--step-small);
   text-decoration: none;
-  padding-bottom: .3rem;
+  /* Symmetric so the text centers against the Register pill; the underline
+     still rides on the bottom padding. */
+  padding: .3rem 0;
 }
 
 .nav-link::after {
@@ -306,7 +328,9 @@ a { color: var(--ink); text-underline-offset: .18em; }
   display: grid;
   place-items: center;
   text-align: center;
-  padding: var(--section-y) var(--gutter);
+  /* No inline padding here: .hero-inner takes the gutter, so its box matches
+     .wrap's exactly. See .hero-inner. */
+  padding: clamp(1.5rem, 3vw, 2.5rem) 0 var(--section-y);
   overflow: hidden;
   color: #FFFFFF;
 }
@@ -316,16 +340,23 @@ a { color: var(--ink); text-underline-offset: .18em; }
   .hero { min-height: calc(100dvh - var(--header-h)); }
 }
 
-.hero-slides { position: absolute; inset: 0; }
+/* isolate keeps the slides' z-index to themselves, so the crossfade layering
+   can't lift a slide above the .hero::after scrim. */
+.hero-slides { position: absolute; inset: 0; z-index: 0; isolation: isolate; }
 
 .hero-slide {
   position: absolute;
   inset: 0;
   opacity: 0;
-  transition: opacity 1.4s ease-in-out;
+  z-index: 0;
+  transition: opacity 1s ease-in-out;
 }
 
-.hero-slide[data-active] { opacity: 1; }
+/* The outgoing slide holds full opacity underneath while the incoming one
+   fades in on top, so the crossfade never dips through the dark backdrop. */
+.hero-slide[data-prev] { opacity: 1; transition: none; }
+
+.hero-slide[data-active] { opacity: 1; z-index: 1; }
 
 .hero-slide img { width: 100%; height: 100%; object-fit: cover; }
 
@@ -333,27 +364,140 @@ a { color: var(--ink); text-underline-offset: .18em; }
   content: "";
   position: absolute;
   inset: 0;
-  /* Neutral, not navy: a coloured scrim tints the whole photograph. The radial
-     layer deepens only the middle, where the type sits, so the edges of the
-     picture stay lighter and the photo still reads as a photo. */
+  z-index: 1;
+  /* The panels carry the contrast; this only keeps the frame from competing
+     with the white nav above it. Deliberately weak.
+
+     Panels beat a global wash on BOTH counts, which is why they came back after
+     being cut. Worst backdrop under either text block across all five slides,
+     and the brightness of the photograph where nothing covers it:
+
+       panels .62 + wash .05-.09    8.59:1   photo 0.096   <- this one
+       panels .52 + wash .08-.13    7.29:1   photo 0.088
+       no panels + wash .10-.16     5.09:1   photo 0.049
+       no panels + wash .24-.34     6.50:1   photo 0.032
+
+     A global wash dims the whole frame to protect two small text areas. The
+     panels darken only those two areas, so the other ~80% of the picture keeps
+     its colour — twice as bright, at better contrast. Re-measure before
+     changing any of it; DESIGN.md has the commands. */
   background:
-    radial-gradient(ellipse 58% 62% at 50% 54%, rgba(0,0,0,.44), transparent 100%),
-    linear-gradient(180deg, rgba(10,10,10,.50), rgba(10,10,10,.62));
+    linear-gradient(120deg, rgba(14,12,10,.20) 0%, rgba(14,12,10,0) 45%),
+    linear-gradient(300deg, rgba(14,12,10,.20) 0%, rgba(14,12,10,0) 42%),
+    linear-gradient(180deg, rgba(14,12,10,.05), rgba(14,12,10,.09));
 }
 
-.hero-inner .verse,
-.hero-inner .verse-ref,
-.hero-inner .hero-meta { text-shadow: 0 1px 2px rgba(0,0,0,.35), 0 2px 18px rgba(0,0,0,.35); }
+/* Three anchors on a diagonal: the verse holds the top-left, the facts and the
+   CTA answer it at bottom-right, and the photograph keeps the middle. Four
+   corners were the other option and give the eye no path to follow. */
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  align-self: stretch;
+  justify-self: stretch;
+  width: 100%;
+  /* Literally .wrap's box: 68rem INCLUDING the gutter, not 68rem of content
+     inside it. Taking the max-width alone and leaving the gutter on .hero left
+     the type a full gutter (32px at 1440) outside the wordmark above it — the
+     right idea measured against the wrong box. */
+  max-width: 68rem;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: auto 1fr auto;
+  gap: 1.25rem;
+}
 
-.hero-inner { position: relative; z-index: 1; display: grid; justify-items: center; gap: 1.25rem; }
+.hero-lede {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+  max-width: 100%;
+  /* Grid items stretch by default, so this filled its whole half-width column
+     and the band ran on far past the text. Size it to its content instead —
+     .hero-facts already does the same thing with justify-self: end. */
+  justify-self: start;
+  display: grid;
+  justify-items: start;
+  gap: .75rem;
+  text-align: left;
+  /* Hangs left by exactly its own left padding, so the TYPE lands on the column
+     line — the verse's opening quote starts where the wordmark above it starts,
+     and the panel edge sits one padding outside, the way hanging punctuation
+     does. This only works because .hero-inner is literally .wrap's box. */
+  --pad-x: clamp(1.4rem, 2.8vw, 2.2rem);
+  padding: clamp(1.25rem, 2.4vw, 1.9rem) var(--pad-x);
+  margin-left: calc(-1 * var(--pad-x));
+  background: rgba(24, 20, 16, .62);
+}
 
-.hero-crown { height: 2.25rem; width: 2.45rem; color: #FFFFFF; opacity: .95; }
+.hero-facts {
+  grid-column: 2;
+  grid-row: 3;
+  min-width: 0;
+  display: grid;
+  justify-items: end;
+  justify-self: end;
+  align-self: end;
+  gap: .75rem;
+  /* Left-aligned inside a right-anchored band: three lines of ragged-left body
+     copy is the hardest thing on the page to read, and anchoring the band to
+     the corner already does the compositional work. */
+  justify-items: start;
+  text-align: left;
+  max-width: 26rem;
+  /* Mirror of .hero-lede: hangs right by its own padding, so the CTA's right
+     edge lands on the column line under the header's own Register pill. */
+  --pad-x: clamp(1.25rem, 2.4vw, 1.8rem);
+  padding: clamp(1.1rem, 2vw, 1.5rem) var(--pad-x);
+  margin-right: calc(-1 * var(--pad-x));
+  background: rgba(24, 20, 16, .62);
+}
+
+/* Stepped down from --step-hero: inside a panel the verse no longer needs size
+   to separate itself from the picture, and the panel stays a reasonable share
+   of the frame. */
+.hero-lede .verse { font-size: clamp(1.25rem, .9rem + 1.6vw, 1.75rem); max-width: 28ch; }
+
+
+/* The date carries weight instead of size, so it stays tighter than the line
+   above it while still holding up over a photograph. Full opacity: dimming
+   small type over an image costs legibility and buys nothing here, since the
+   panel already supplies the contrast. */
+.hero-when {
+  font-size: var(--step-small);
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+/* The copy stays left-aligned for reading; the button alone goes to the panel's
+   right edge, closing the block at the corner it is anchored to. */
+.hero-facts .btn { justify-self: end; }
+
+/* One column on a phone: the lede leads, the facts follow, both flush left. */
+@media (max-width: 860px) {
+  .hero-inner { grid-template-columns: 1fr; grid-template-rows: auto 1fr auto; }
+  .hero-lede { grid-column: 1; }
+  .hero-facts {
+    grid-column: 1;
+    grid-row: 3;
+    justify-self: start;
+    max-width: 100%;
+    /* Stacked, so it hangs left like the lede rather than right. */
+    margin-right: 0;
+    margin-left: calc(-1 * var(--pad-x));
+  }
+  .hero-lede .verse, .hero-facts > * { max-width: 100%; }
+}
 
 .verse {
   font-family: var(--font-display);
   font-size: var(--step-hero);
   line-height: 1.3;
-  max-width: 20ch;
+  /* 34ch, not 20: at 20ch this ran to five stacked lines and read as a wall
+     rather than a sentence. Ragged right, so the left edge stays the anchor. */
+  max-width: 34ch;
   font-variation-settings: "SOFT" 30, "WONK" 1;
 }
 
@@ -365,7 +509,10 @@ a { color: var(--ink); text-underline-offset: .18em; }
   opacity: .85;
 }
 
-.hero-meta { font-size: var(--step-small); opacity: .92; }
+/* Body size, not small. At 14px/400 over a photograph the strokes were too thin
+   to hold against the detail behind them — contrast measured 9.3:1, so the
+   problem was never tint. */
+.hero-meta { font-size: var(--step-body); line-height: 1.55; }
 
 /* About intro — tall verse splash with the opening copy floating over it. */
 .intro-hero {
@@ -378,20 +525,32 @@ a { color: var(--ink); text-underline-offset: .18em; }
   color: #FFFFFF;
 }
 
-.intro-hero__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* The container is wider than the 16:9 file, so cover overflows vertically. A
+   centred band clips the hoodie's "No cross, no crown" and its Matthew 6:33
+   line; nudging the band down keeps them without losing the faces above. The
+   whole adjustment lives here, so the file stays a plain top crop. */
+.intro-hero__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 84%;
+}
 
 .intro-hero::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(105deg, rgba(24,22,20,.72) 0%, rgba(24,22,20,.5) 55%, rgba(24,22,20,.45) 100%);
+  /* Darkest on the right, under the verse; the pane on the left needs no help. */
+  background: linear-gradient(255deg, rgba(24,22,20,.74) 0%, rgba(24,22,20,.5) 55%, rgba(24,22,20,.45) 100%);
 }
 
 .intro-hero__grid {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: 1.1fr .9fr;
+  grid-template-columns: .9fr 1.1fr;
   gap: clamp(1.5rem, 5vw, 3.5rem);
   align-items: center;
 }
@@ -399,7 +558,11 @@ a { color: var(--ink); text-underline-offset: .18em; }
 .intro-hero__verse { display: grid; gap: 1rem; }
 .intro-hero__verse .verse { max-width: none; }
 
+/* Pane sits left, verse right: the splash photo's window, cross and stage are on
+   the right-hand side, and a pane there would cover them. Source order stays
+   verse-first so the verse still leads on a phone, where the two stack. */
 .intro-pane {
+  order: -1;
   background: var(--paper);
   color: var(--ink);
   padding: clamp(1.75rem, 4vw, 2.75rem);
@@ -420,7 +583,7 @@ a { color: var(--ink); text-underline-offset: .18em; }
     padding-block: var(--section-y) 0;
   }
   .intro-hero__verse { max-width: none; justify-items: center; text-align: center; }
-  .intro-pane { margin-top: clamp(2rem, 8vw, 3rem); }
+  .intro-pane { order: 0; margin-top: clamp(2rem, 8vw, 3rem); }
 }
 
 /* --- 7. Media rows (About: Vision / Mission) --------------------------- */
@@ -435,7 +598,16 @@ a { color: var(--ink); text-underline-offset: .18em; }
 .media-row + .media-row { margin-top: var(--section-y); }
 .media-row--flip .media-row__text { order: 2; }
 
-.media-row__media img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.media-row__media img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  /* Tonal bridge. The paper is near-white and an untreated photo runs the full
+     range, so the edge lands as a hard luminance step. Warming the photo a
+     little closes the gap from the photo's side — the same nudge the collage
+     prints get, so every photograph on the site sits in one register. */
+  filter: sepia(.07) saturate(.96);
+}
 
 @media (max-width: 760px) {
   .media-row { grid-template-columns: 1fr; }
@@ -564,42 +736,141 @@ a { color: var(--ink); text-underline-offset: .18em; }
 
 /* --- 11. Event Info ----------------------------------------------------- */
 
-.page-head { padding-block: clamp(3rem, 7vw, 4.5rem) 0; }
-.page-head .h1 { margin-top: .5rem; }
-.page-head .hero-meta { color: var(--ink-muted); margin-top: .75rem; }
+/* This page opens plain — no splash — so the type has to carry the top of it.
+   The head gets its own vertical field and is closed with a hairline, instead
+   of simply running into whatever section comes next. */
+.page-head { padding-block: clamp(3.5rem, 8vw, 6rem) clamp(2.5rem, 6vw, 4rem); }
+.page-head .h1 { margin-top: .6rem; max-width: 16ch; }
 
-/* The theme owns this page once it lands. */
-.theme-block {
-  margin-top: var(--section-y);
+/* Event Info's splash. Built like .intro-hero (image, scrim, content above)
+   rather than as a background-image, so it can carry srcset. The scrim is
+   heaviest on the left, which is where the eyebrow and h1 sit. */
+.page-head--splash {
+  position: relative;
+  overflow: hidden;
+  color: #FFFFFF;
+  /* Height is set here rather than left to fall out of the padding, because
+     what it really controls is how much of the photograph is revealed: the
+     splash files are 16:9 and this band is far wider than that, so cover only
+     ever shows a horizontal strip. At 1440px wide the old padding gave 331px,
+     which was 41% of the frame; this gives ~446px, or about 55%. */
+  min-height: clamp(18rem, 31vw, 28rem);
+  display: grid;
+  align-content: center;
+  padding-block: clamp(3.5rem, 7vw, 5rem);
+}
+
+.page-head__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* The band is far wider than the image, so cover slices a strip from the
+     middle. Pull that strip upward to keep the windows, ceiling and cross. */
+  object-position: 50% 26%;
+}
+
+.page-head--splash::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, rgba(20,18,16,.58) 0%, rgba(20,18,16,.36) 52%, rgba(20,18,16,.20) 100%);
+}
+
+.page-head__inner { position: relative; z-index: 1; }
+
+.page-head--splash .eyebrow { color: rgba(255, 255, 255, .82); }
+
+.page-head__meta {
+  margin-top: clamp(1.5rem, 4vw, 2.25rem);
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem 1.75rem;
+  font-size: var(--step-label);
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+/* Facts at a glance. Deliberately the same construction as .values on About —
+   1px gaps letting the rule colour through — so the two pages read as one
+   system. Paper cells on the sunk ground, six facts across three columns.
+   This replaced a 9rem/1fr <dl> at small-text size, which put the most
+   important content on the page in its smallest type and left most of the
+   measure empty. */
+.facts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--rule);
   border: 1px solid var(--rule);
-  padding: clamp(2.5rem, 8vw, 4.5rem) var(--gutter);
+  margin: 2rem 0 0;
+}
+
+.fact {
+  background: var(--paper);
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+  min-width: 0;
+}
+
+.fact dt {
+  font-size: var(--step-label);
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+/* No SOFT/WONK: this is 20px, and both are off below 24px. */
+.fact dd {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--step-h3);
+  line-height: 1.3;
+}
+
+.fact dd a { font-weight: inherit; }
+
+.fact-sub {
+  display: block;
+  margin-top: .4rem;
+  font-family: var(--font-body);
+  font-size: var(--step-small);
+  line-height: 1.55;
+  color: var(--ink-muted);
+}
+
+@media (max-width: 860px) { .facts { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .facts { grid-template-columns: 1fr; } }
+
+/* DORMANT — no markup uses .theme-block, .theme-name, .tba or .tba-note right
+   now. Unknowns are cut from the page rather than shown as a chip, so the
+   plaque comes back only when there is a theme to put in it: it leads, inside
+   the head's paper field, directly under the meta strip, and becomes the
+   largest type on the site. Kept here so announcing the theme is a markup
+   change, not a rebuild. */
+.theme-block {
+  border: 1px solid var(--rule);
+  padding: clamp(2.25rem, 6vw, 3.5rem) var(--gutter);
   text-align: center;
   display: grid;
   justify-items: center;
-  gap: 1rem;
+  gap: .9rem;
 }
+
+.page-head .theme-block { margin-top: clamp(2rem, 5vw, 3rem); }
 
 .theme-block .theme-name {
   font-family: var(--font-display);
   font-size: var(--step-h1);
   font-variation-settings: "SOFT" 30, "WONK" 1;
-}
-
-.detail-list {
-  display: grid;
-  grid-template-columns: 9rem 1fr;
-  gap: .9rem 2rem;
-  margin: 2rem 0 0;
-  font-size: var(--step-small);
-}
-
-.detail-list dt { color: var(--ink-muted); }
-.detail-list dd { margin: 0; }
-.detail-list a { font-weight: 600; }
-
-@media (max-width: 560px) {
-  .detail-list { grid-template-columns: 1fr; gap: .2rem 0; }
-  .detail-list dd + dt { margin-top: .9rem; }
 }
 
 .tba {
@@ -614,7 +885,43 @@ a { color: var(--ink); text-underline-offset: .18em; }
 
 .tba-note { margin-top: .6rem; font-size: var(--step-small); color: var(--ink-muted); }
 
-/* Full-width navy band. At most two per page. */
+/* Packing list, grouped. Thirteen undifferentiated bullets scan as noise;
+   four labelled clusters can be checked off a bag one at a time. Hairlines
+   between items rather than bullets, so each column reads as a form. */
+.pack-groups {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(1.25rem, 3.5vw, 2.5rem);
+  margin-top: 2rem;
+}
+
+.pack-group > .eyebrow {
+  display: block;
+  padding-bottom: .65rem;
+  border-bottom: 1px solid var(--ink-muted);
+}
+
+.pack-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: var(--step-small);
+  line-height: 1.5;
+}
+
+.pack-list li {
+  padding: .55rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.pack-list li:last-child { border-bottom: 0; }
+
+@media (max-width: 900px) { .pack-groups { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .pack-groups { grid-template-columns: 1fr; } }
+
+/* Full-width navy band. At most two per page — this one and the footer. It
+   sits after the practical sections: asking for the commitment before the
+   reader knows what to bring or what the rules are is the wrong order. */
 .band {
   background: var(--band);
   color: var(--band-fg);
@@ -635,6 +942,26 @@ a { color: var(--ink); text-underline-offset: .18em; }
   font-variation-settings: "SOFT" 30, "WONK" 1;
 }
 
+/* The intro band carries a question and a line of the vision, not a one-line
+   call, so it needs a text column beside the button. Scoped tighter than
+   `.band p` so the lede stays body copy instead of display size. */
+.band--intro > .wrap { align-items: end; }
+
+.band--intro .band-text { max-width: 42rem; }
+
+.band--intro .band-lede {
+  font-family: var(--font-body);
+  font-size: var(--step-body);
+  font-variation-settings: normal;
+  line-height: 1.7;
+  margin-top: .8rem;
+  opacity: .9;
+}
+
+@media (max-width: 620px) {
+  .band--intro > .wrap { align-items: start; }
+}
+
 .counselor {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
@@ -642,11 +969,29 @@ a { color: var(--ink); text-underline-offset: .18em; }
   align-items: center;
 }
 
-.counselor img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
+.counselor img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  filter: sepia(.07) saturate(.96);   /* see .media-row__media img */
+}
 
 @media (max-width: 760px) {
   .counselor { grid-template-columns: 1fr; }
 }
+
+/* The page has to end on something composed. About closes on the centred
+   three-church lockup; a bare sentence on white here read as an unfinished
+   draft. The button is outline, not wheat — the header pill is already the
+   one wheat CTA on this screen. */
+.closing {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: 1rem;
+}
+
+.closing .prose { max-width: 48ch; }
 
 /* --- 12. Footer --------------------------------------------------------- */
 
@@ -698,33 +1043,6 @@ a { color: var(--ink); text-underline-offset: .18em; }
 .mt-lg { margin-top: clamp(1.25rem, 3vw, 2rem); }
 .mt-sm { margin-top: .75rem; }
 
-.info-blocks { display: grid; gap: clamp(2rem, 5vw, 3rem); margin-top: 2rem; }
-.info-blocks > div + div {
-  border-top: 1px solid var(--rule);
-  padding-top: clamp(2rem, 5vw, 3rem);
-}
-
-/* Packing checklist: two columns on a wide screen, one on a phone. Items are
-   short, so a single column leaves a long thin ribbon of text. */
-.pack-list {
-  columns: 2;
-  column-gap: clamp(1.5rem, 4vw, 3rem);
-  margin: 1rem 0 0;
-  padding-left: 1.1rem;
-  font-size: var(--step-small);
-}
-
-.pack-list li {
-  break-inside: avoid;
-  margin-bottom: .4rem;
-}
-
-.pack-list--no { columns: 2; }
-
-@media (max-width: 640px) {
-  .pack-list { columns: 1; }
-}
-
 /* --- 14. The FAQ scene -------------------------------------------------
    Prints scattered on the ground, with the FAQ panel resting on top of them.
    The panel is opaque, so photographs behind its footprint are only ever seen
@@ -732,7 +1050,7 @@ a { color: var(--ink); text-underline-offset: .18em; }
    -------------------------------------------------------------------- */
 
 .faq-scene {
-  --panel-half: min(22rem, 46vw);   /* half the FAQ panel's width */
+  --panel-half: min(20rem, 46vw);   /* half the FAQ panel's width */
   position: relative;
   isolation: isolate;
   overflow: hidden;
@@ -742,29 +1060,57 @@ a { color: var(--ink); text-underline-offset: .18em; }
 
 /* Fixed height in rem, NOT a percentage of the section. The FAQ grows by half
    its height when answers are opened; anything positioned in % would slide down
-   the page as it does. Tall enough to cover the fully-expanded section; the
-   overflow is clipped by .faq-scene. */
+   the page as it does. The overflow is clipped by .faq-scene.
+
+   The height tracks where the prints actually END, not how tall the section can
+   get. The pile is 30 placements deep and its lowest print bottoms out near
+   135rem; the mask then dissolves that bottom edge into the floor, so a reader
+   who opens enough answers to outgrow the pile sees it fade out rather than
+   stop on a hard line. .faq-scene::before still handles the other case — the
+   section shorter than the pile, where the scene's own bottom edge does the
+   cutting. Grow this with the pile if placements are added past 30. */
 .faq-scatter {
   position: absolute;
   top: 1.5rem;
   left: 0;
   right: 0;
-  height: 224rem;
+  height: 138rem;
   z-index: 0;
   pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 12rem), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 12rem), transparent);
 }
 
 .snap {
+  /* Two knobs, deliberately separate. --s is print size, --p is how far the
+     scatter spreads. The --off values were dealt against a ~2060px display, so
+     below that the outer column crosses the page edge. Scaling both together
+     fits everything but renders the prints too small to read, so instead --s
+     stays near full and --p pulls the columns inward: the prints stay big and
+     simply overlap more, which is what a pile of prints does anyway. Overhang
+     is held to ~3rem, the width of the side falloff, so anything that does
+     cross the edge dissolves into the floor instead of being cut square. */
+  --s: 1;
+  --p: 1;
   position: absolute;
   /* Measured outward from the panel's edge, not as a percentage of the page:
      --side is -1 or 1, --off is the distance from the panel edge to this
      print's rotated outer bounding box. Mirrored pairs therefore clear the
      panel by exactly the same amount on both sides at every viewport width. */
-  left: calc(50% + var(--side) * (var(--panel-half) + var(--off)));
+  /* --off places the print's CENTRE, and the smallest authored offsets were
+     picked so a print's half-width just clears the panel. Scaling --off toward
+     zero would scale that clearance away and tuck prints under the panel, so
+     only the distance BEYOND the clearance compresses. .72 is the widest
+     rotated half-width any print reaches as a fraction of its own --w. */
+  --clear: calc(var(--w) * var(--s) * .72 + 2rem);   /* 2rem = air around the panel */
+  left: calc(50% + var(--side) * (var(--panel-half) + var(--clear)
+        + max(0rem, var(--off) - var(--clear)) * var(--p)));
   top: var(--y);
-  width: var(--w);
+  width: calc(var(--w) * var(--s));
   margin: 0;                           /* <figure> ships with a UA margin of 1em 40px */
-  padding: .4rem .4rem .9rem;          /* deeper margin at the foot, like a print */
+  /* Scales with --s so a shrunk print keeps the same border-to-photo ratio
+     rather than growing a proportionally chunky mat. */
+  padding: calc(.4rem * var(--s)) calc(.4rem * var(--s)) calc(.9rem * var(--s));
   background: #FBF9F4;
   transform: translate(-50%, -50%) rotate(var(--r));
   box-shadow:
@@ -777,9 +1123,9 @@ a { color: var(--ink); text-underline-offset: .18em; }
   width: 100%;
   aspect-ratio: var(--ar, 1);
   object-fit: cover;
-  /* Warm the photographs and pull the contrast back, the way a drugstore
-     print from 2003 looks next to a phone screen. */
-  filter: sepia(.22) saturate(.86) contrast(1.04) brightness(1.02);
+  /* Only a nudge. The frame, the shadow and the scene-wide grain carry the era;
+     the pixels stay close to neutral so faces still read as faces. */
+  filter: sepia(.07) saturate(.96) contrast(1.01);
 }
 
 /* Grain and a light falloff, applied over the whole floor — not per photo, so
@@ -799,7 +1145,30 @@ a { color: var(--ink); text-underline-offset: .18em; }
 .faq-scene::before {
   background:
     radial-gradient(130% 90% at 50% 38%, transparent 42%, rgba(38, 30, 20, .16) 100%),
-    linear-gradient(to bottom, transparent calc(100% - 10rem), var(--scene) calc(100% - 1rem));
+    linear-gradient(to bottom, transparent calc(100% - 10rem), var(--scene) calc(100% - 1rem)),
+    /* And the top edge, which had neither a falloff nor anything to justify
+       going without one: the first row of prints was sliced flat against the
+       section boundary above, with a bare strip of floor over it, while the
+       other three edges dissolved. Shorter than the bottom's 10rem — the top
+       row's centres sit ~5-7rem down, and a longer ramp washes the photographs
+       out instead of just softening where they meet the edge. */
+    linear-gradient(to top, transparent calc(100% - 6rem), var(--scene) calc(100% - .5rem)),
+    /* Same trick on the left and right: a print that overhangs is dissolved into
+       the floor rather than cut square by the page edge. Opaque at the very edge
+       is what hides the cut, so the width only sets how gently it goes.
+       Three stops, not two — a straight two-stop ramp holds high opacity for most
+       of its run and reads as a milky band with a visible end; the midpoint
+       approximates an ease-out so it reads as haze. And it fades to a zero-alpha
+       --scene rather than `transparent`, which is transparent BLACK and would
+       drag this near-white through a faintly grey middle. */
+    linear-gradient(to right,
+      var(--scene),
+      color-mix(in srgb, var(--scene) 50%, transparent) 1.5rem,
+      color-mix(in srgb, var(--scene) 0%, transparent) 4.5rem),
+    linear-gradient(to left,
+      var(--scene),
+      color-mix(in srgb, var(--scene) 50%, transparent) 1.5rem,
+      color-mix(in srgb, var(--scene) 0%, transparent) 4.5rem);
 }
 
 .faq-scene::after {
@@ -811,19 +1180,36 @@ a { color: var(--ink); text-underline-offset: .18em; }
 .faq-panel {
   position: relative;
   z-index: 2;
-  max-width: 44rem;
+  /* 40rem, not 44: with the side padding this puts the answer text at ~63ch,
+     on the 65ch measure the type scale targets (it ran ~70ch at 44rem), and it
+     hands 2rem of floor back to the prints on each side. */
+  max-width: 40rem;
   margin-inline: auto;
   background: var(--paper);
   padding: clamp(1.75rem, 5vw, 3.25rem);
   box-shadow: 0 24px 60px rgba(28, 22, 14, .22);
 }
 
+/* CSS cannot divide one length by another, so the continuous curve is sampled
+   at the widths people actually use. Size is held high and spread gives way
+   first; each pair is solved at the LOW end of its range, which is where a
+   max-width query actually binds. */
+@media (max-width: 2060px) { .snap { --s: 1; --p: .99; } }
+@media (max-width: 1800px) { .snap { --s: 1; --p: .72; } }
+@media (max-width: 1600px) { .snap { --s: 1; --p: .48; } }
+@media (max-width: 1450px) { .snap { --s: 1; --p: .21; } }
+/* Below ~1280px the panel alone is 46vw a side, leaving no strip to spread
+   into. Stop chasing the side fit: hold a readable size, collapse the spread,
+   and let these be read in the bands above and below the panel. */
+@media (max-width: 1280px) { .snap { --s: .85; --p: 0; } }
+@media (max-width: 1024px) { .snap { --s: .75; --p: 0; } }
+
 /* On a phone the panel is nearly full width, so the scatter can only be read
    above and below it — give those bands more room, and shrink the prints so
    more of them land in view. */
 @media (max-width: 560px) {
   .faq-scene { padding-block: clamp(5rem, 22vw, 8rem); }
-  .snap { width: calc(var(--w) * .46); }
+  .snap { --s: .60; --p: 0; }
 }
 
 @media (prefers-reduced-motion: no-preference) {

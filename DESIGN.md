@@ -18,10 +18,60 @@ Direction: **Lantern** (see the type proofs artifact for the visual).
 Scope is **Winter 2026 only**. Past photos are used as atmosphere, never labeled by year.
 
 ### Home
-1. Hero — rotating dimmed photo carousel; crown, description, Matthew 6:33, `Dec 28–30, 2026 · Camp Wightman, CT`, `Register →`
-2. FAQ scene — an opaque FAQ panel resting on a floor of scattered photographic
-   prints, warm-toned with grain and a light falloff over the whole surface
-3. Footer
+1. Hero — rotating dimmed photo carousel; description, Matthew 6:33, `Dec 28–30, 2026 · Camp Wightman, CT`, `Register →`
+
+**The hero keeps its two translucent panels**, `rgba(24,20,16,.62)`, and `.hero::after`
+is deliberately weak behind them: two short corner washes at `.20` over a `.05–.09`
+overall tone.
+
+They were cut once, on the argument that they covered the best photograph on the site,
+and putting them back was right. Measured across all five slides — worst backdrop under
+either text block, and the brightness of the photograph where nothing covers it:
+
+| treatment | contrast | uncovered photo |
+|---|---|---|
+| **panels .62 + wash .05–.09** | **8.59:1** | **0.096** |
+| panels .52 + wash .08–.13 | 7.29:1 | 0.088 |
+| no panels + wash .10–.16 | 5.09:1 | 0.049 |
+| no panels + wash .24–.34 | 6.50:1 | 0.032 |
+
+**A global wash dims the whole frame to protect two small text areas; panels darken only
+those two.** The rest of the picture keeps its colour — twice as bright, at better
+contrast. Without panels the wash had to be heavy enough that the students' navy jackets
+read as black. Don't re-cut them without re-running these numbers.
+
+**`.hero-inner` is literally `.wrap`'s box**: `max-width: 68rem` *including*
+`padding-inline: var(--gutter)`, with `.hero` itself carrying no horizontal padding. Each
+panel then hangs outward by its own `--pad-x`, so the **type** lands on the column line
+while the panel edge sits one padding outside it, the way hanging punctuation does. The
+verse's opening quote and the wordmark above it agree; the hero's Register button ends
+where the header's does.
+
+Three earlier attempts at that alignment failed, each differently:
+
+1. `margin-left: calc(-1 * var(--gutter))` on the panel bled it to the viewport edge by
+   moving the whole element, so the type went too — positioned off the viewport while the
+   rest of the page was positioned off the column, 381px apart at 1920px. It agreed only
+   at ≤1088px, so it showed on wide screens alone.
+2. Bleeding just the fill (`::before` at `-100vw`) put the type right but grew each panel
+   into a slab running from the viewport edge to the text. A bleed that reaches the
+   viewport cannot also start its type at the column — the fill between the two *is* the
+   slab.
+3. Taking `max-width: 68rem` while leaving the gutter on `.hero` left the type a full
+   gutter outside the wordmark: the right idea measured against the wrong box.
+
+**Screenshots are available.** Helium (`/Applications/Helium.app/Contents/MacOS/Helium`)
+is Chromium and runs headless:
+
+```
+Helium --headless --disable-gpu --screenshot=out.png --window-size=1440,900 \
+  --hide-scrollbars http://localhost:8777/index.html
+```
+
+Contrast can be checked the same way — render with `.hero-lede > *, .hero-facts > *
+{ visibility: hidden }` to get the bare backdrop, then take the 95th-percentile relative
+luminance of the region the type occupies. Pin a carousel slide with
+`.hero-slide { opacity: 0 !important }` plus an `:nth-child(n)` override.
 
 ### About
 1. Splash ~55vh, single still photo, Matthew 6:10 set large, no button
@@ -35,16 +85,62 @@ Scope is **Winter 2026 only**. Past photos are used as atmosphere, never labeled
 Background/History section is deferred; a slot is held for it above Vision.
 
 ### Event Info
-Opens **plain** — no photo splash. Big type on white, date and venue underneath.
-1. Page header — "Winter 2026 Retreat" + date/venue
-2. **Theme** — the headline of the page. Centered, bordered, largest type on the site once it lands.
-3. Details — 2-column list: Dates, Location, Who, Cost, Deadline, Speaker
-4. Register band — night navy, one button
-5. Schedule · 6. What to Pack · 7. Guidelines — all TBA for now
-8. Counselor application block — photo + `Apply →`
-9. "Still have questions? See the FAQ →"
+Opens **plain** — no photo splash. Big type on white, date and venue on a hairline
+underneath. Grounds alternate paper / sunk down the whole page, the way About's do.
+
+1. Page header — h1 + a tracked caps meta strip (date · venue · town) closed by a
+   hairline. The **Theme** plaque belongs here, directly under the strip, once there
+   is a theme; until then the head is the h1 and the strip alone.
+2. Details — *sunk*. A fact grid, same construction as About's `.values` (1px gaps
+   showing `--rule` through, paper cells): Dates, Location, Who — and Cost, Deadline
+   and Speaker as they land
+3. I. Schedule — `.media-row`, text left / photo right
+4. II. Packing — *sunk*. Four labelled clusters (Sleep · Clothing · Wash · Bring
+   along), hairlines between items rather than bullets
+5. Register band — night navy, one button
+6. Counselor application block — photo + `Apply →`
+7. Close — *sunk*. Centered: FAQ link + email, mirroring About's closing lockup
 
 No sub-nav. FAQ lives on Home only and is not repeated here.
+
+**The theme leads.** It was tried below the facts, on the reasoning that a large empty
+frame at the top of the page announces there is no news — but the theme is what the
+page is for, and burying it costs more than the empty frame does. While TBA the plaque
+holds the slot at reduced padding; restore the padding when the theme arrives.
+
+**Grounds alternate paper / sunk down the whole page**, the way About's do, so the
+order above also fixes the background rhythm. Anything that sits *on* a ground —
+the `.fact` cells — has to take its fill from whichever ground it is not on, or it
+disappears when a section moves. (`.rules-panel` was the case that proved it, before
+guidelines left for the FAQ.)
+
+**The roman numerals are gone.** They were borrowed from About (I. Vision, II. Mission,
+III. Core Doctrinal Values) and worked while there were three practical sections; with
+guidelines moved to the FAQ there are two, and two items are not a sequence. Eyebrow
+names the section, `h2` says something — that part of About's pattern stays.
+
+**Keep those `h2`s plain.** "What to bring", "What to expect". Headline-ifying a
+supporting fact was tried twice and cut both times: "Connecticut in late December is
+cold" over a lede of "plan on warm layers" (neither survived — the section goes eyebrow
+→ `h2` → list), and "How the days run", which promised an hour-by-hour shape the page
+does not have.
+
+**The conference section must not restate the Home hero.** Its copy opened "Three days
+of the Word, prayer, and Christ-centered friendship" — the Home hero's line, word for
+word for ten words. It now says what Home does not: that students are on site for all
+three days, in counselor-led small groups, which the counselor block further down
+already supports.
+
+**The register band goes after the practical sections**, not between Details and the
+rest: asking for the commitment before the reader knows what to bring or what the rules
+are is the wrong order. That still leaves two navy bands — this one and the footer.
+
+**Participant guidelines live in the Home FAQ, not here.** They were a boxed panel of
+prohibitions plus a phone paragraph; as prose they are two questions — "What should I
+leave at home?" next to "What should I pack?", and the existing "What's the phone
+policy?" — which is where someone actually looks for them. `.rules`, `.rules-panel` and
+`.rules-list` were deleted with the section. The old "What are the behavior
+expectations?" entry pointed at this section and was removed; the two answers cover it.
 
 ---
 
@@ -66,10 +162,18 @@ No sub-nav. FAQ lives on Home only and is not repeated here.
   2023–2025 point at it and it is what Google has indexed. Site is built against the new
   domain; switching is a one-line `CNAME` change.
 
-### TBA — shown as fields with a "To be announced" chip, never hidden
-Theme · Cost · Registration deadline · Speaker · Schedule · Packing list · Participant guidelines
+### Unknowns are cut, not chipped
+**This reverses the earlier rule.** Anything not yet decided comes off the page entirely
+rather than appearing as a "To be announced" chip: a page that says it does not know six
+times reads as unfinished, and the chips were loudest exactly where the news was thinnest.
 
-Filling any of these in is a text swap. The layout does not move.
+Currently cut: **theme · cost · registration deadline · speaker · day-by-day schedule**.
+Each comes back as a markup addition when it is known — `.theme-block`, `.theme-name`,
+`.tba` and `.tba-note` are still in `site.css`, marked dormant, so restoring the theme
+plaque is a paste rather than a rebuild. The Details grid is a plain grid of cells, so
+cost, deadline and speaker are three `<div class="fact">` blocks whenever they land.
+
+Known and shown: dates · venue · who · packing list.
 
 ---
 
@@ -99,6 +203,26 @@ Wheat is the one loud thing on the site. It gets used for:
 Wheat never touches: body text, headings, links in running text, or any fill larger than
 roughly 15% of the viewport. **One wheat CTA per screen.** Night navy bands: at most two
 per page (register band + footer).
+
+### Corners
+The site is square corners and hairlines: the fact and value grids, the theme plaque, the
+intro pane, the FAQ panel, the scattered prints, every section divider. There are exactly
+three radii in `site.css` and they are all small — 2px on the focus ring, 3px on the
+`.tba` chip, 3px on `.btn`.
+
+Buttons were a 999px pill, the one round shape in the whole system, on the most prominent
+element on the page. The wheat fill already makes the CTA the loudest thing on screen;
+the pill gave it a second, borrowed kind of distinctiveness and pulled it out of the
+system everything else belongs to. Square (0) was tried too and reads severe against
+Fraunces' warmth.
+
+**The rule: radius marks interactivity. Surfaces are square.** Buttons and the focus ring
+get 2&ndash;3px; everything you cannot click stays at 0 &mdash; the hero panels, the About
+intro pane, the FAQ panel, the fact and value cells, the theme plaque, the scattered
+prints. The hero panels were rendered at 0, 3px, 10px and 18px: 3px is invisible at
+670&times;240 and only blurs the rule, while 10px and up turn an ink block into an app
+card and walk the page into the SaaS-card vocabulary the whole direction avoids. Nothing
+on this site needs more than 3px.
 
 ---
 
@@ -187,7 +311,12 @@ Needed: 8–12 landscape hero-quality shots plus candids, as **originals**, in
 that export were full resolution.
 
 Home hero carousel wants wide group shots. About's Vision/Mission rows want
-portrait-tolerant crops. Event Info's counselor block wants one photo of counselors.
+portrait-tolerant crops. Event Info's counselor block wants one photo of counselors, and
+its Schedule row one shot of a day between sessions.
+
+**Still missing: a photograph of Camp Wightman itself.** The Location fact and the head
+of the page both have nowhere to put one, so the venue is currently a name and an
+address. A wide exterior or grounds shot is the single most useful photo to add next.
 
 ### The FAQ scene
 30 photographs (`collage-1` … `collage-30`) lie behind the FAQ panel, used across 48
@@ -242,6 +371,13 @@ The scene grows when FAQ answers open, so that edge sweeps across the prints; a 
 riding the edge dissolves them continuously. Hiding prints past an overhang threshold was
 tried and rejected &mdash; any threshold makes prints blink in and out as the edge passes.
 
+**All four edges need one.** The top had no falloff for a long time, so the first row was
+sliced flat against the dark section above it with a bare strip of floor over it, while
+the other three dissolved. Its ramp is 6rem, not the bottom's 10rem: the top row's centres
+sit only ~5&ndash;7rem below the scene's top, so a longer ramp washes those photographs out
+instead of softening where they meet the edge. 5rem left a visible straight edge and 8rem
+was too much &mdash; both were rendered and compared.
+
 ## Photo assignments
 
 Real photos are cropped into the slot file names below, so swapping one later means
@@ -251,10 +387,11 @@ everything here is centre-cropped to the slot's shape, JPEG quality 60-80.
 | Slot file | Source photo |
 | --- | --- |
 | `hero-1.jpg` | group-photo-24 |
-| `about-splash.jpg` | event-shot-25 |
+| `about-splash.jpg` | worship-23 (in `assets/photos/`) |
 | `vision.jpg` | fireplace |
 | `mission.jpg` | girl-group-24 |
 | `counselors.jpg` | counselors-funny |
+| `schedule.jpg` | group-hangout-23 |
 | `collage-1.jpg` | speaker-focus-25 |
 | `collage-2.jpg` | prayer-standing |
 | `collage-3.jpg` | girl-prayer-25 |
@@ -271,20 +408,70 @@ everything here is centre-cropped to the slot's shape, JPEG quality 60-80.
 | `collage-14.jpg` | intensive-boy-prayer |
 | `collage-15.jpg` | girl-group-25 |
 | `collage-16.jpg` | boys-24 |
+| `collage-17.jpg` | 20231227_212058 |
+| `collage-18.jpg` | 20231228_223517 |
+| `collage-19.jpg` | event-shot-25 |
+| `collage-20.jpg` | f57333568 |
+| `collage-21.jpg` | f59851840 |
+| `collage-22.jpg` | f60673152 |
+| `collage-23.jpg` | f57455680 |
+| `collage-24.jpg` | f58565440 |
+| `collage-25.jpg` | f4946816 |
+| `collage-26.jpg` | f57270976 |
+| `collage-27.jpg` | 20231228_190250 |
+| `collage-28.jpg` | f59291200 |
+| `collage-29.jpg` | IMG_2086 |
+| `collage-30.jpg` | IMG_2056 |
 
-**The hero is one photograph, not a carousel.** `hero-2/3/4.jpg` are gone and the slideshow
-markup with them; `site.js` already no-ops when there is a single slide, so adding slides
-back is only a matter of adding the `.hero-slide` divs again.
+**The hero is a six-photo carousel**, `hero-1` through `hero-6`, crossfading every 5s.
+`site.js` no-ops when there is a single `.hero-slide`, so dropping back to one photograph is
+just deleting the other divs. Each slide ships a 1280/1920/2560 `srcset`; `hero-5` stops at
+1920 because there is no 2560 original. Only slide 1 is `fetchpriority="high"` — the rest are
+`low`, so the first paint isn't racing five images it won't show for 5 seconds.
 
 **Collage numbering is by position**: `collage-1` is the highest print on the page and
 `collage-48` the lowest, one file per figure (earlier, 48 figures shared 30 files, so the
 bottom 18 prints repeated the top 18). Photos fill from the top down, in random order within
-the filled range; placeholders start at 17. The shuffle is constrained by *true* orientation: tall
+the filled range. **There are no placeholders left: the scatter is 30 placements and 30
+photographs.** The shuffle is constrained by *true* orientation: tall
 photos fill the 3:4 slots, wide ones the 4:3 slots, leftovers go square. Near-duplicate shots (the two attentive-listening frames) are kept on
 opposite sides of the panel.
 
-To add photos: fill the next placeholder number (currently 17), matching its shape (3:4, 4:3 or 1:1 cycling
-from `collage-1`).
+To add photos: append a figure as slot 31 and onward, continuing the 26rem row pitch,
+and raise `.faq-scatter`'s height and mask to match. Shape follows the 4:3 / 1:1 / 3:4
+cycle unless the photo's true shape disagrees, in which case the photo wins.
+
+**Every original in `assets/photos/` is placed.** 39 originals: 10 carry the hero,
+About and Event slots, and the other 29 are in the collage. Nothing sits unused.
+
+**The pile was cut from 48 placements to 30, and the placeholders deleted.** Twenty
+generated placeholder tiles below a pile of real photographs looked worse than a shorter
+pile, and the run only grows as photos arrive. Consequence to know about: the scatter no
+longer reaches the bottom of a fully-expanded FAQ, so `.faq-scatter` now sets its height
+to where the prints actually end (~138rem) and masks the last 12rem, dissolving the
+pile's own bottom edge into the floor. `.faq-scene::before` still covers the opposite
+case, where the section is shorter than the pile. **Adding placements past 30 means
+growing that height to match**, or the new prints are masked away.
+
+To restore the old geometry for slots 31–48, their `--side` / `--off` / `--y` / `--r` /
+`--w` / `--ar` values are in git at `git show HEAD:index.html`.
+
+**The December 2023 batch was 11 landscape frames and one portrait**, which the 3:4 /
+4:3 / 1:1 cycle could not absorb: slots 17–28 offer four of each shape. Rather than
+scatter the real photos down to slot 47 hunting for 4:3 slots — which would have left
+placeholders interleaved through the whole pile instead of gathered at the bottom —
+slots 25, 27 and 28 had their `--ar` changed to `4 / 3`, the same move `collage-9` and
+`collage-15` already carry. Three of the twelve tolerated a tighter crop and kept their
+cycle shape: `collage-18` (campfire, centred), `collage-21` (round table) and
+`collage-24` (gym) went to 1:1, and `collage-22` to 3:4, all with the subject checked
+for edge-slicing first. `collage-21` and `collage-22` needed the crop biased right of
+centre to keep everyone in frame.
+
+**The photo's true shape wins over the cycle.** `collage-9` and `collage-15` sit in what the
+cycle calls square slots but carry `--ar: 4 / 3`, because both are wide group shots: a centre
+crop to 1:1 threw away 25% of the width and sliced the people standing at the edges. Squaring
+a wide group photo is never worth keeping the cycle intact &mdash; change the slot's `--ar` and
+re-crop to the photo's own ratio instead. Only `--ar` moves; `--w`, `--off` and `--y` stay put.
 
 Placeholders are generated to the slot's true shape (see the script kept with the session
 scratchpad). The older set was one step out of phase with the `--ar` cycle, so a 4:3
@@ -300,9 +487,20 @@ for the pale section. Grace's came as black on a white box, so the white is knoc
 alpha. Both live in `assets/photos/church-*.png`.
 
 
+**`group-photo-23` carries a burnt-in `12/29/2023` camera stamp** across the gravel at
+the bottom, at roughly `x 855-1225, y 938-1006` of the 2055&times;1006 original. The
+`hero-3-*.jpg` slots are cut from `y 0-935` — above the stamp — then centre-cropped to
+16:9, which costs only bare ground below the group's feet. The original keeps the stamp,
+since it is the original; re-crop from `y 0-935` if those slots are ever regenerated.
+
 **Crop from the EXIF-rotated image, always.** Phone photos are often stored sideways with an
 orientation flag. `sips` crops the raw pixels and keeps the flag, so a portrait photo
 "cropped" to 1600&times;900 comes out as a 900&times;1600 image the browser rotates and then
 re-crops &mdash; soft and wrongly framed. That happened to `about-splash`, `vision` and
 `mission` and to the collage orientation sort. Use PIL with `ImageOps.exif_transpose` before
 cropping, and save without the orientation tag.
+
+**About intro: pane left, verse right.** The splash (worship-23) has its window, cross and
+stage on the right, so the pane sits on the left and the tint is darkest on the right under
+the verse. The flip is CSS `order` only &mdash; source order stays verse-first so it still leads
+on a phone. If the splash photo changes, check which side its subject is on before keeping this.

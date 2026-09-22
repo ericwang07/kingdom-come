@@ -42,14 +42,26 @@ if (slides.length > 1) {
   let timer = null;
 
   const show = (next) => {
-    slides[index].removeAttribute("data-active");
+    const prev = slides[index];
     index = next % slides.length;
-    slides[index].setAttribute("data-active", "");
+    const cur = slides[index];
+    if (cur === prev) return;
+
+    slides.forEach((s) => s.removeAttribute("data-prev"));
+    prev.removeAttribute("data-active");
+    prev.setAttribute("data-prev", "");
+    cur.setAttribute("data-active", "");
+
+    /* Drop the outgoing layer once it's fully covered; the timeout is a
+       fallback for when transitionend doesn't fire (e.g. a hidden tab). */
+    const drop = () => prev.removeAttribute("data-prev");
+    cur.addEventListener("transitionend", drop, { once: true });
+    window.setTimeout(drop, 1600);
   };
 
   const start = () => {
     if (timer || reduceMotion.matches) return;
-    timer = window.setInterval(() => show(index + 1), 6000);
+    timer = window.setInterval(() => show(index + 1), 5000);
   };
 
   const stop = () => {
@@ -57,9 +69,10 @@ if (slides.length > 1) {
     timer = null;
   };
 
-  const hero = document.querySelector(".hero");
-  hero?.addEventListener("mouseenter", stop);
-  hero?.addEventListener("mouseleave", start);
+  /* No hover-to-pause: the hero is the whole viewport, so any resting cursor
+     would halt the carousel for good (mouseenter doesn't fire until the first
+     move, and mouseleave needs the pointer to exit the screen). Reduced-motion
+     is what actually stops the animation for anyone who needs it. */
 
   /* Don't advance in a background tab. */
   document.addEventListener("visibilitychange", () => {
@@ -69,6 +82,29 @@ if (slides.length > 1) {
   reduceMotion.addEventListener("change", () => (reduceMotion.matches ? stop() : start()));
 
   start();
+}
+
+/* --- Header glass ------------------------------------------------------ */
+
+/* Flips the header to its translucent state as soon as the page leaves the
+   very top. rAF-throttled so the scroll handler stays cheap. */
+const header = document.querySelector(".site-header");
+
+if (header) {
+  let queued = false;
+
+  const syncHeader = () => {
+    queued = false;
+    header.toggleAttribute("data-scrolled", window.scrollY > 10);
+  };
+
+  window.addEventListener("scroll", () => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(syncHeader);
+  }, { passive: true });
+
+  syncHeader();
 }
 
 /* --- Footer year ------------------------------------------------------- */

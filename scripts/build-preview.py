@@ -94,7 +94,7 @@ GROUPS = [
      "shape &mdash; match it or the photo is cropped. Candid, unposed shots."),
     ("About &mdash; verse splash", "about.html", lambda f: "about-splash" in f,
      "Full-bleed photo behind the Matthew 6:10 verse, with a white text pane floating over the "
-     "right-hand side. Keep the right half quiet and the left clear enough for white type."),
+     "left-hand side. Put the subject on the right, where the verse sits over it in white type."),
     ("About &mdash; Vision / Mission", "about.html", lambda f: f.endswith(("vision.jpg", "mission.jpg")),
      "Sits beside the Vision and Mission copy, half the page wide. Cropped to 4:3."),
     ("About &mdash; host church logos", "about.html", lambda f: "church-" in f,
