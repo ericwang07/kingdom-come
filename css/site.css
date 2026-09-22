@@ -329,8 +329,14 @@ a { color: var(--ink); text-underline-offset: .18em; }
   place-items: center;
   text-align: center;
   /* No inline padding here: .hero-inner takes the gutter, so its box matches
-     .wrap's exactly. See .hero-inner. */
-  padding: clamp(1.5rem, 3vw, 2.5rem) 0 var(--section-y);
+     .wrap's exactly. See .hero-inner.
+
+     Top and bottom are the same value because they are the same thing: the
+     inset of the two panels from the frame's edges. The bottom used to be
+     var(--section-y), a section-spacing token borrowed for a job it does not
+     describe, which sat the lower panel 96px off the bottom against the upper
+     one's 40px off the header. */
+  padding: clamp(1.5rem, 3vw, 2.5rem) 0;
   overflow: hidden;
   color: #FFFFFF;
 }
