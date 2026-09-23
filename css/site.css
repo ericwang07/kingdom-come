@@ -810,7 +810,12 @@ a { color: var(--ink); text-underline-offset: .18em; }
    measure empty. */
 .facts {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  /* Six tracks, not three, with each cell spanning two. Three-to-a-row looks the
+     same, but a trailing row that does not fill can now be SPLIT — two cells at
+     half each — instead of one cell being stretched to double width to close it.
+     With five facts that was a full-width Dates/Location/Who row over a narrow
+     Cost and a wide Register by. */
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 1px;
   background: var(--rule);
   border: 1px solid var(--rule);
@@ -853,8 +858,32 @@ a { color: var(--ink); text-underline-offset: .18em; }
   color: var(--ink-muted);
 }
 
-@media (max-width: 860px) { .facts { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 560px) { .facts { grid-template-columns: 1fr; } }
+/* An unfilled trailing row would leave the container's rule colour showing
+   through, so it always gets closed — split evenly where two cells share it.
+   The breakpoints are mutually exclusive rather than overriding each other:
+   the three-per-row rules use :nth-child(3n+1) and the two-per-row rules use
+   (2n+1), and a reset could not win the cascade against them — the compound
+   sibling selector outranks it, which left a grey hole at 800px. */
+.facts > .fact { grid-column: span 2; }
+
+@media (min-width: 861px) {
+  /* Trailing row of two: half each, rather than one normal and one double. */
+  .facts > .fact:nth-last-child(2):nth-child(3n + 1),
+  .facts > .fact:nth-last-child(2):nth-child(3n + 1) ~ .fact { grid-column: span 3; }
+  /* Trailing row of one: full width. 1 / -1 rather than a span count, so it can
+     never ask for more tracks than the grid actually has. */
+  .facts > .fact:last-child:nth-child(3n + 1) { grid-column: 1 / -1; }
+}
+
+@media (min-width: 561px) and (max-width: 860px) {
+  .facts { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .facts > .fact:last-child:nth-child(2n + 1) { grid-column: 1 / -1; }
+}
+
+@media (max-width: 560px) {
+  .facts { grid-template-columns: minmax(0, 1fr); }
+  .facts > .fact { grid-column: 1 / -1; }
+}
 
 /* DORMANT — no markup uses .theme-block, .theme-name, .tba or .tba-note right
    now. Unknowns are cut from the page rather than shown as a chip, so the

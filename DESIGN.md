@@ -155,7 +155,7 @@ expectations?" entry pointed at this section and was removed; the two answers co
   section directly below it. Both quoted in ESV; don't mix translations.
 - **Hosting churches** Church of the Ascent · Covenant Chapel · New England Grace Presbyterian
 - **Email** kingdomcomeyouthconference@gmail.com *(placeholder — real account not created yet)*
-- **Instagram** @kingdomcomeyouthconference *(placeholder — account not created yet)*
+- **Instagram** @kingdomcomeyouthconference — https://www.instagram.com/kingdomcomeyouthconference/
 - **Domain** kingdomcomeyouthconference.org *(to be purchased)*. Formal name in copy is
   **Kingdom Come Youth Conference** — "conference", not "retreat", everywhere. The old
   `kingdomcomeyouthretreat.org` should keep renewing and redirect: printed materials from
