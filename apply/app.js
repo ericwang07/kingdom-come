@@ -1,5 +1,6 @@
 const CONFIG = {
   // Change this list to the email addresses that should receive applications and references.
+  // The first address must activate FormSubmit (one-time email link); the others are CC'd.
   recipientEmails: [
     "allenliu878581@gmail.com",
     "david.choi@aya.yale.edu",
@@ -209,8 +210,11 @@ async function submitForm(type, values, subject, message) {
 }
 
 async function submitToEndpoint(type, values, subject, message) {
-  const endpoints = getSubmissionEndpoints();
-  if (!endpoints.length) return false;
+  const recipients = CONFIG.recipientEmails.filter(
+    (email) => email && email !== "your-email@example.com"
+  );
+  const endpoint = CONFIG.formEndpoint || getFormSubmitEndpoint(recipients);
+  if (!endpoint) return false;
 
   const payload = {
     _subject: subject,
@@ -220,39 +224,35 @@ async function submitToEndpoint(type, values, subject, message) {
     ...values,
   };
 
-  const results = await Promise.allSettled(
-    endpoints.map(async (endpoint) => {
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+  // FormSubmit only needs the first address activated; the rest are CC'd.
+  if (!CONFIG.formEndpoint && recipients.length > 1) {
+    payload._cc = recipients.slice(1).join(",");
+  }
 
-      if (!response.ok) {
-        throw new Error(`Submission to ${endpoint} failed with status ${response.status}.`);
-      }
-    })
-  );
+  const response = await fetch(endpoint, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
 
-  const failures = results.filter((result) => result.status === "rejected");
-  failures.forEach((result) => console.warn(result.reason));
+  if (!response.ok) {
+    throw new Error(`Email submission failed with status ${response.status}.`);
+  }
 
-  if (failures.length === results.length) {
-    throw new Error("All email endpoints failed.");
+  const result = await response.json().catch(() => ({}));
+  if (String(result.success) === "false") {
+    throw new Error(`Email submission failed: ${result.message}`);
   }
 
   return true;
 }
 
-function getSubmissionEndpoints() {
-  if (CONFIG.formEndpoint) return [CONFIG.formEndpoint];
-
-  return CONFIG.recipientEmails
-    .filter((email) => email && email !== "your-email@example.com")
-    .map((email) => `https://formsubmit.co/ajax/${encodeURIComponent(email)}`);
+function getFormSubmitEndpoint(recipients) {
+  if (!recipients.length) return "";
+  return `https://formsubmit.co/ajax/${encodeURIComponent(recipients[0])}`;
 }
 
 async function submitToGoogleSheet(type, values, message) {
