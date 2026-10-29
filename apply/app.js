@@ -70,8 +70,7 @@ async function handleApplicantSubmit(event) {
   submitButton.textContent = "Submitting...";
 
   try {
-    await submitToEndpoint("Counselor Application", values, subject, body);
-    await submitToGoogleSheet("Counselor Application", values, body);
+    await submitForm("Counselor Application", values, subject, body);
     clearAutosave("kc-counselor-application-draft");
     form.reset();
     updateSeminarFields();
@@ -103,8 +102,7 @@ async function handlePastorSubmit(event) {
   submitButton.textContent = "Submitting...";
 
   try {
-    await submitToEndpoint("Pastoral Reference", values, subject, body);
-    await submitToGoogleSheet("Pastoral Reference", values, body);
+    await submitForm("Pastoral Reference", values, subject, body);
     clearAutosave("kc-pastoral-reference-draft");
     form.reset();
     resultTitle.textContent = "Reference submitted";
@@ -192,11 +190,27 @@ function clearAutosave(storageKey) {
   localStorage.removeItem(storageKey);
 }
 
+// Sends to every configured channel at once and succeeds if any of them gets through,
+// so one failing email relay doesn't block the submission or the Google Sheet copy.
+async function submitForm(type, values, subject, message) {
+  const results = await Promise.allSettled([
+    submitToEndpoint(type, values, subject, message),
+    submitToGoogleSheet(type, values, message),
+  ]);
+
+  results
+    .filter((result) => result.status === "rejected")
+    .forEach((result) => console.warn(result.reason));
+
+  const delivered = results.some((result) => result.status === "fulfilled" && result.value);
+  if (!delivered) {
+    throw new Error("Submission could not be delivered to any endpoint.");
+  }
+}
+
 async function submitToEndpoint(type, values, subject, message) {
   const endpoints = getSubmissionEndpoints();
-  if (!endpoints.length) {
-    throw new Error("No submission endpoint configured.");
-  }
+  if (!endpoints.length) return false;
 
   const payload = {
     _subject: subject,
@@ -206,7 +220,7 @@ async function submitToEndpoint(type, values, subject, message) {
     ...values,
   };
 
-  await Promise.all(
+  const results = await Promise.allSettled(
     endpoints.map(async (endpoint) => {
       const response = await fetch(endpoint, {
         method: "POST",
@@ -218,10 +232,19 @@ async function submitToEndpoint(type, values, subject, message) {
       });
 
       if (!response.ok) {
-        throw new Error(`Submission failed with status ${response.status}.`);
+        throw new Error(`Submission to ${endpoint} failed with status ${response.status}.`);
       }
     })
   );
+
+  const failures = results.filter((result) => result.status === "rejected");
+  failures.forEach((result) => console.warn(result.reason));
+
+  if (failures.length === results.length) {
+    throw new Error("All email endpoints failed.");
+  }
+
+  return true;
 }
 
 function getSubmissionEndpoints() {
@@ -233,7 +256,7 @@ function getSubmissionEndpoints() {
 }
 
 async function submitToGoogleSheet(type, values, message) {
-  if (!CONFIG.googleSheetEndpoint) return;
+  if (!CONFIG.googleSheetEndpoint) return false;
 
   const payload = {
     formType: type,
@@ -250,6 +273,8 @@ async function submitToGoogleSheet(type, values, message) {
     },
     body: JSON.stringify(payload),
   });
+
+  return true;
 }
 
 function formatApplication(values) {
